@@ -8,8 +8,14 @@ export const GuardTool = {
     name: "Guard",
     icon: "🛡️",
     init(ctx) {
-        const hudFactory = createHudFactory({ shadowRoot: ctx.shadowRoot });
-        const hud = hudFactory("guard", "Guard", { width: 280 });
+        const hudFactory = createHudFactory({
+            shadowRoot: ctx.shadowRoot,
+            bus: ctx.bus,
+        });
+        const hud = hudFactory("guard", "Guard", {
+            width: 280,
+            icon: GuardTool.icon,
+        });
 
         const view = document.createElement("div");
         const label = document.createElement("div");
