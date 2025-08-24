@@ -35,6 +35,7 @@ const ns = "debugkit:v1:";
         registerTool: reg.registerTool,
         enableTool: reg.enableTool,
         disableTool: reg.disableTool,
+        toggleTool: reg.toggleTool,
         getState: reg.getState,
         bus,
     };

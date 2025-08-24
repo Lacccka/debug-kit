@@ -31,6 +31,7 @@
     DebugKit.registerTool({id, name, icon, init, destroy, ...});
     DebugKit.enableTool(id);
     DebugKit.disableTool(id);
+    DebugKit.toggleTool(id);
     DebugKit.getState(id);
     DebugKit.bus.emit(event, data);
     DebugKit.bus.on(event, fn);

@@ -33,6 +33,13 @@ export function createRegistry({ bus, storage, ns }) {
             bus.emit("registry:change");
         }
     }
+    function toggleTool(id) {
+        if (enabled.has(id)) {
+            disableTool(id);
+        } else {
+            enableTool(id);
+        }
+    }
     function safeInit(def) {
         try {
             def.init && def.init(toolCtx(def.id));
@@ -82,6 +89,7 @@ export function createRegistry({ bus, storage, ns }) {
         registerTool,
         enableTool,
         disableTool,
+        toggleTool,
         getState,
         autoload,
         list: () => Array.from(registry.keys()),
