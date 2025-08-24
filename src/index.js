@@ -12,6 +12,7 @@ import { versioning } from "./core/versioning.js";
 import { createPanel } from "./ui/panel/panel.js";
 
 import { GuardTool } from "./tools/guard/index.js";
+import { GridOverlayTool } from "./tools/grid-overlay/index.js";
 
 const ns = "debugkit:v1:";
 
@@ -42,6 +43,7 @@ const ns = "debugkit:v1:";
     };
 
     reg.registerTool(GuardTool);
+    reg.registerTool(GridOverlayTool);
 
     // Автовключение ранее активных инструментов
     reg.autoload();
