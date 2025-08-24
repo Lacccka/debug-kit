@@ -14,8 +14,15 @@ export function createBus() {
         },
         off(type, fn) {
             const a = m.get(type) || [];
-            const i = a.indexOf(fn);
-            if (i > -1) a.splice(i, 1);
+            if (!fn) {
+                m.delete(type);
+            } else {
+                const i = a.indexOf(fn);
+                if (i > -1) a.splice(i, 1);
+            }
+        },
+        clear() {
+            m.clear();
         },
         emit(type, data) {
             (m.get(type) || []).slice().forEach((fn) => {
