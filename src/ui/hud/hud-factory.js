@@ -91,13 +91,10 @@ export function createHudFactory({ shadowRoot }) {
         window.addEventListener("touchend", onUp, { passive: true });
 
         // кнопки
-        hdr.querySelector(".btn-close").onclick = () => hud.remove();
-        hdr.querySelector(".btn-min").onclick = () => {
-            const minimized = hud.classList.toggle("is-min");
-            body.style.display = minimized ? "none" : "";
-        };
+        const btnClose = hdr.querySelector(".btn-close");
+        const btnMin = hdr.querySelector(" .btn-min");
 
-        return {
+        const api = {
             el: hud,
             setContent(nodeOrHTML) {
                 body.innerHTML = "";
@@ -105,8 +102,21 @@ export function createHudFactory({ shadowRoot }) {
                 else body.appendChild(nodeOrHTML);
             },
             destroy() {
+                hdr.removeEventListener("mousedown", onDown);
+                window.removeEventListener("mousemove", onMove);
+                window.removeEventListener("mouseup", onUp);
+                hdr.removeEventListener("touchstart", onDown);
+                window.removeEventListener("touchmove", onMove);
+                window.removeEventListener("touchend", onUp);
                 hud.remove();
             },
         };
+        btnClose.onclick = () => api.destroy();
+        btnMin.onclick = () => {
+            const minimized = hud.classList.toggle("is-min");
+            body.style.display = minimized ? "none" : "";
+        };
+
+        return api;
     };
 }
