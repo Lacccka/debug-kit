@@ -122,7 +122,7 @@
 -   Desktop: **Alt+D**.
 -   Mobile:
     -   triple-tap (правый нижний угол),
-    -   long-tap hotspot (8×8 px),
+    -   long-tap hotspot (8×8 px, левый верхний угол),
     -   `#debug` в URL.
 
 ---
