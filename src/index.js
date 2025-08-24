@@ -22,13 +22,14 @@ const ns = "debugkit:v1:";
     const shadowRoot = host.shadowRoot;
 
     attachBaseStyles(shadowRoot);
-    setupGestures({ bus, togglePanel: () => panel.toggle() });
-    setupListeners({ bus });
 
+    const panel = createPanel({ bus, registry: reg, storage, shadowRoot, ns });
+
+    setupListeners({ bus });
     versioning.init({ storage, ns });
 
+    setupGestures({ bus, togglePanel: () => panel.toggle() });
     // Панель-лаунчер
-    const panel = createPanel({ bus, registry: reg, storage, shadowRoot, ns });
 
     // Глобальный экспорт для регистраций инструментов
     window.DebugKit = {
