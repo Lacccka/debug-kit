@@ -1,0 +1,11 @@
+{
+  "name": "debug-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Universal frontend debug panel (shadow DOM, HUD, tools).",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.js",
+    "size": "node tools/size-check.js"
+  }
+}

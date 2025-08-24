@@ -1,0 +1,7 @@
+:host {
+    --dk-bg: #101114;
+    --dk-fg: #e6e7ea;
+    --dk-accent: #5aa6ff;
+    --dk-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+    --dk-radius: 10px;
+}
