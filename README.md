@@ -58,10 +58,10 @@
 ### Event bus
 
 -   Централизованные события:
-    -   `viewport:change`
-    -   `zoom:change`
-    -   `scrollbar:change`
-    -   `theme:change`
+    -   `viewport:change` – изменение размеров окна или масштаба.
+    -   `zoom:change` – изменение `visualViewport.scale`.
+    -   `scrollbar:change` – появление или исчезновение скроллбаров.
+    -   `theme:change` – смена темы (системная или из панели).
     -   `tool:state`
     -   `registry:change`
 
