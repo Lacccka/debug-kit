@@ -1,3 +1,11 @@
 .dk-panel {
     backdrop-filter: saturate(120%) blur(8px);
 }
+
+.dk-card select {
+    background: #15171c;
+    color: var(--dk-fg);
+    border: 1px solid #2a2d35;
+    border-radius: 8px;
+    padding: 6px 8px;
+}

@@ -30,6 +30,8 @@ const BASE_CSS = `
 .dk-card__row{display:flex;align-items:center;justify-content:space-between}
 .dk-card__head{display:flex;align-items:center;gap:6px;font-weight:600}
 
+.dk-card select{background:#15171c;color:var(--dk-fg);border:1px solid #2a2d35;border-radius:8px;padding:6px 8px}
+
 /* switch */
 .dk-switch{position:relative;width:40px;height:22px}
 .dk-switch input{display:none}

@@ -4,6 +4,7 @@ import { renderGlobalSettings } from "./settings-global.js";
 export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
     const root = shadowRoot.querySelector(".dk-root");
     const panel = shadowRoot.querySelector(".dk-panel");
+    let locked = storage.getItem(ns + "panelLock", "0") === "1";
 
     const toggle = document.createElement("button");
     toggle.className = "dk-toggle";
@@ -16,16 +17,24 @@ export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
             panel.classList.add("open");
         },
         close() {
-            panel.classList.remove("open");
+            if (!locked) panel.classList.remove("open");
         },
         toggle() {
-            panel.classList.toggle("open");
+            if (locked) panel.classList.add("open");
+            else panel.classList.toggle("open");
         },
         toggleState() {
             return panel.classList.contains("open");
         },
     };
     toggle.addEventListener("click", () => api.toggle());
+
+    bus.on("panel:lock", (v) => {
+        locked = v;
+        if (locked) panel.classList.add("open");
+    });
+
+    if (locked) panel.classList.add("open");
 
     function render() {
         panel.innerHTML = "";
@@ -41,7 +50,7 @@ export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
         body.className = "dk-panel__body";
 
         const list = renderList({ registry }); // сам отрисует список
-        const globals = renderGlobalSettings({ storage, ns });
+        const globals = renderGlobalSettings({ storage, ns, bus });
 
         body.appendChild(list);
         body.appendChild(globals);
