@@ -48,19 +48,23 @@ export function createRegistry({ bus, storage, ns }) {
         }
     }
     function toolCtx(id) {
+        const key = ns + "tool:" + id + ":state";
+        const read = () => storage.getJSON(key, {}) || {};
         return {
             bus,
             shadowRoot: document.querySelector("#debugkit-host")?.shadowRoot,
             storage: {
-                get: (k, d) =>
-                    (storage.getJSON(ns + "tool:" + id + ":state", {}) || {})[
-                        k
-                    ] ?? d,
+                get: (k, d) => read()[k] ?? d,
                 set: (k, v) => {
-                    const cur =
-                        storage.getJSON(ns + "tool:" + id + ":state", {}) || {};
+                    const cur = read();
                     cur[k] = v;
-                    storage.setJSON(ns + "tool:" + id + ":state", cur);
+                    storage.setJSON(key, cur);
+                },
+                getJSON: (k, d) => read()[k] ?? d,
+                setJSON: (k, v) => {
+                    const cur = read();
+                    cur[k] = v;
+                    storage.setJSON(key, cur);
                 },
             },
         };
