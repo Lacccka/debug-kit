@@ -26,7 +26,7 @@ export function createHost() {
 
     const hudLayer = document.createElement("div");
     hudLayer.className = "dk-hud-layer";
-    hudLayer.style.pointerEvents = "auto"; // HUD должен реагировать на drag/click
+    hudLayer.style.pointerEvents = "none";
     hudLayer.style.zIndex = "2";
     shadowRoot.appendChild(hudLayer);
     return { host, shadowRoot, root, panel, hudLayer };

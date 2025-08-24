@@ -39,7 +39,7 @@ const BASE_CSS = `
 .dk-switch input:checked + .slider:before{transform:translateX(18px)}
 
 /* hud */
-.dk-hud-layer{position:fixed;inset:0;pointer-events:auto}
+.dk-hud-layer{position:fixed;inset:0;pointer-events:none}
 .dk-hud{position:fixed;min-width:260px;max-width:320px;background:#14161a;border-radius:var(--dk-radius);box-shadow:var(--dk-shadow);pointer-events:auto}
 .dk-hud .hdr{display:flex;align-items:center;gap:8px;padding:8px;background:#191b20;cursor:move; pointer-events:auto}
 `;
