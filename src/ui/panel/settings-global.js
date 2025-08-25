@@ -1,3 +1,8 @@
+import {
+    exportSettings,
+    importSettings,
+} from "../../tools/settings-transfer/index.js";
+
 export function renderGlobalSettings({ storage, ns, bus }) {
     const box = document.createElement("div");
     box.className = "dk-card";
@@ -58,6 +63,45 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     lockRow.appendChild(lockLabel);
     lockRow.appendChild(lockCtrl);
     box.appendChild(lockRow);
+
+    const transferRow = document.createElement("div");
+    transferRow.className = "dk-card__row";
+
+    const btnExport = document.createElement("button");
+    btnExport.textContent = "Export";
+    btnExport.onclick = () => {
+        const data = exportSettings(ns);
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "debugkit-settings.json";
+        link.click();
+        URL.revokeObjectURL(url);
+    };
+
+    const btnImport = document.createElement("button");
+    btnImport.textContent = "Import";
+    btnImport.onclick = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "application/json";
+        input.onchange = () => {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                importSettings(ns, reader.result);
+                location.reload();
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    };
+
+    transferRow.appendChild(btnExport);
+    transferRow.appendChild(btnImport);
+    box.appendChild(transferRow);
 
     const resetRow = document.createElement("div");
     resetRow.className = "dk-card__row";

@@ -70,6 +70,7 @@ DebugKit.enableTool("guard");
     DebugKit.disableTool(id);
     DebugKit.toggleTool(id);
     DebugKit.getState(id);
+    DebugKit.loadPlugin("https://cdn.example.com/my-tool.js");
     DebugKit.bus.emit(event, data);
     DebugKit.bus.on(event, fn);
     ```
@@ -79,7 +80,7 @@ DebugKit.enableTool("guard");
 -   Выезжающее окно с инструментами.
 -   Шапка: заголовок + поиск.
 -   Сетка карточек с тумблерами on/off.
--   Глобальные настройки (сброс, тема light/dark/auto, блокировка панели).
+-   Глобальные настройки (сброс, тема light/dark/auto, блокировка панели, экспорт/импорт).
 
 ### HUD
 

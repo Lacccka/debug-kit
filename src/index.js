@@ -7,6 +7,7 @@ import { storage } from "./core/storage.js";
 import { setupGestures } from "./core/gestures.js";
 import { setupListeners } from "./core/listeners.js";
 import { createRegistry } from "./core/registry.js";
+import { loadPlugin } from "./core/plugin-loader.js";
 import { attachBaseStyles } from "./core/styles.js";
 import { versioning } from "./core/versioning.js";
 import { createPanel } from "./ui/panel/panel.js";
@@ -42,6 +43,7 @@ const ns = "debugkit:v1:";
         disableTool: reg.disableTool,
         toggleTool: reg.toggleTool,
         getState: reg.getState,
+        loadPlugin,
         bus,
     };
 
