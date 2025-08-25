@@ -15,7 +15,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
         const hud = document.createElement("div");
         hud.className = "dk-hud";
 
-        const baseWidth = Math.max(280, Math.min(320, width));
+        const baseWidth = Math.max(280, Math.min(480, width));
         const hdr = document.createElement("div");
         hdr.className = "hdr";
         hdr.innerHTML = `<span class="ic">${icon}</span><strong class="ttl">${title}</strong>

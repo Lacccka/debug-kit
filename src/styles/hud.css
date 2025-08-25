@@ -9,7 +9,7 @@
 .dk-hud {
     position: fixed;
     width: 300px;
-    max-width: 320px;
+    max-width: 480px;
     min-width: 280px;
     background: var(--dk-surface);
     border: var(--dk-border-width) solid var(--dk-border);
