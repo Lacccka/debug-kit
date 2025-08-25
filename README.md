@@ -33,6 +33,8 @@ make test
 make size
 ```
 
+> На Windows требуется установить GNU Make (например, через `choco install make` или использовать WSL). При отсутствии `make` выполняйте команды npm ниже. (On Windows install GNU Make or use WSL; if unavailable, run the npm commands below.)
+
 Также доступны команды npm:
 
 ```bash
