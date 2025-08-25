@@ -3,7 +3,7 @@
 */
 
 /* ========== ROOT / LAYERING ===================================== */
-.dk-root {
+.dk-panel-root {
     position: fixed;
     inset: auto var(--dk-space-4) var(--dk-space-4) auto;
     pointer-events: none;
