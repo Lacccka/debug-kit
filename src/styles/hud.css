@@ -11,7 +11,7 @@
     min-width: 260px;
     max-width: 340px;
     background: var(--dk-surface);
-    border: 1px solid var(--dk-border);
+    border: var(--dk-border-width) solid var(--dk-border);
     border-radius: var(--dk-radius);
     box-shadow: var(--dk-shadow);
     pointer-events: auto;
@@ -23,10 +23,10 @@
 .dk-hud .hdr {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
+    gap: var(--dk-space-md);
+    padding: var(--dk-space-md) 10px;
     background: color-mix(in oklab, var(--dk-surface) 85%, #000 15%);
-    border-bottom: 1px solid var(--dk-border);
+    border-bottom: var(--dk-border-width) solid var(--dk-border);
     border-radius: var(--dk-radius) var(--dk-radius) 0 0;
     cursor: move;
     user-select: none;

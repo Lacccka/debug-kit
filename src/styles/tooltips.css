@@ -4,9 +4,9 @@
     max-width: 320px;
     background: var(--dk-surface);
     color: var(--dk-fg);
-    border: 1px solid var(--dk-border);
+    border: var(--dk-border-width) solid var(--dk-border);
     border-radius: 8px;
-    padding: 8px 10px;
+    padding: var(--dk-space-md) 10px;
     box-shadow: var(--dk-shadow);
     font-size: 12px;
     line-height: 1.35;
@@ -27,8 +27,8 @@
     width: 8px;
     height: 8px;
     background: inherit;
-    border-left: 1px solid var(--dk-border);
-    border-top: 1px solid var(--dk-border);
+    border-left: var(--dk-border-width) solid var(--dk-border);
+    border-top: var(--dk-border-width) solid var(--dk-border);
     transform: rotate(45deg);
 }
 

@@ -22,19 +22,16 @@
 :host,
 html,
 body {
-    font: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial,
-        Helvetica, sans-serif;
+    font: var(--dk-font-base);
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
 }
 
 /* Focus ring utility for keyboard nav */
 :where(a, button, [role="button"], input, select, textarea):focus-visible {
-    outline: 2px solid
-        color-mix(in oklab, var(--dk-accent, #2f7dff) 70%, transparent);
+    outline: 2px solid var(--dk-accent-emphasis);
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px
-        color-mix(in oklab, var(--dk-accent, #2f7dff) 25%, transparent);
+    box-shadow: 0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
 }
 
 /* Reduced motion */
@@ -70,7 +67,7 @@ body {
 
 /* Utility separator */
 .dk-sep {
-    height: 1px;
+    height: var(--dk-border-width);
     background: var(--dk-border, #23252b);
-    margin: 0.25rem 0;
+    margin: var(--dk-space-sm) 0;
 }

@@ -7,6 +7,15 @@
     --dk-radius: 12px;
     --dk-gap: 10px;
     --dk-toggle-size: 2.5rem;
+    --dk-space-sm: 4px;
+    --dk-space-md: 8px;
+
+    /* typography */
+    --dk-font-base: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto,
+        Arial, Helvetica, sans-serif;
+
+    /* borders */
+    --dk-border-width: 1px;
 
     /* Dark (default) */
     --dk-bg: #101114;
@@ -18,6 +27,18 @@
     --dk-fg-muted: #b8bbc4;
     --dk-accent: #5aa6ff;
     --dk-accent-strong: #2f7dff;
+    --dk-accent-emphasis: color-mix(
+        in oklab,
+        var(--dk-accent) 70%,
+        transparent
+    );
+    --dk-accent-subtle: color-mix(in oklab, var(--dk-accent) 25%, transparent);
+    --dk-accent-faint: color-mix(in oklab, var(--dk-accent) 22%, transparent);
+    --dk-accent-border: color-mix(
+        in oklab,
+        var(--dk-accent) 65%,
+        var(--dk-border)
+    );
     --dk-on-accent: var(--dk-bg);
     --dk-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
 }
