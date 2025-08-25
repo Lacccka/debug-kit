@@ -17,7 +17,7 @@ export async function loadPlugin(url) {
             if (!tool) {
                 throw new Error("Plugin did not export tool config");
             }
-            window.DebugKit.registerTool(tool);
+            window.DebugKit?.registerTool?.(tool);
             return tool;
         } catch {
             /* fall through to script loader */
@@ -34,8 +34,8 @@ export async function loadPlugin(url) {
                     reject(new Error("Plugin did not provide DebugKitPlugin"));
                     return;
                 }
-                window.DebugKit.registerTool(tool);
                 resolve(tool);
+                window.DebugKit?.registerTool?.(tool);
             } catch (e) {
                 reject(e);
             } finally {
