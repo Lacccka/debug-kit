@@ -1,70 +1,367 @@
-/* tokens.css — design tokens & themes */
+/* tokens.css — design tokens & themes (enhanced) */
+/* ------------------------------------------------------------------ */
+/* 0) RESET-LIKE SAFETIES (scoped)                                    */
+/* ------------------------------------------------------------------ */
 :host {
-    /* z layers */
-    --dk-z: 2147483000;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
 
-    /* spacing & radii */
-    --dk-radius: 10px;
-    --dk-gap: 10px;
-    --dk-toggle-size: 2.5rem;
-    --dk-space-sm: 4px;
-    --dk-space-md: 8px;
-    --dk-space-lg: 12px;
-    --dk-space-xl: 16px;
+/* ------------------------------------------------------------------ */
+/* 1) PRIMITIVES (do not use directly in components)                   */
+/* ------------------------------------------------------------------ */
+:host {
+    /* z-layers (clamped to keep room above overlays if the app uses 2^31) */
+    --dk-z-0: 0;
+    --dk-z-1: 10;
+    --dk-z-2: 100;
+    --dk-z-3: 1000;
+    --dk-z-4: 10000;
+    --dk-z-overlay: 2147482000;
+    --dk-z-toast: 2147482500;
+    --dk-z-modal: 2147483000; /* kept your value */
+    --dk-z-tooltip: 2147483200;
 
-    /* typography */
-    --dk-font-base: 14px/20px system-ui, -apple-system, "Segoe UI", Roboto,
-        Arial, Helvetica, sans-serif;
+    /* base unit & spacing scale (4px step; compose via multiples) */
+    --dk-unit: 4px;
+    --dk-space-1: calc(var(--dk-unit) * 1); /* 4  */
+    --dk-space-2: calc(var(--dk-unit) * 2); /* 8  */
+    --dk-space-3: calc(var(--dk-unit) * 3); /* 12 */
+    --dk-space-4: calc(var(--dk-unit) * 4); /* 16 */
+    --dk-space-5: calc(var(--dk-unit) * 6); /* 24 */
+    --dk-space-6: calc(var(--dk-unit) * 8); /* 32 */
+    --dk-space-7: calc(var(--dk-unit) * 10); /* 40 */
+    --dk-space-8: calc(var(--dk-unit) * 12); /* 48 */
+
+    /* radius scale */
+    --dk-radius-sm: 6px;
+    --dk-radius-md: 10px; /* your default */
+    --dk-radius-lg: 14px;
+    --dk-radius-xl: 20px;
+    --dk-radius-pill: 9999px;
+
+    /* size tokens (for controls/icons/toggles) */
+    --dk-size-1: 1.75rem;
+    --dk-size-2: 2rem;
+    --dk-size-3: 2.25rem;
+    --dk-size-4: 2.5rem; /* your toggle size */
+    --dk-icon: 1.25rem;
 
     /* borders */
     --dk-border-width: 1px;
+    --dk-border-style: solid;
 
-    /* Dark (default) */
+    /* typography (responsive with clamp; fall back to system stack) */
+    --dk-font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+        Helvetica, sans-serif;
+    --dk-font-base: 14px/1.45 var(--dk-font-family);
+
+    /* type scale */
+    --dk-fs-xs: clamp(11px, 0.74rem + 0.1vw, 12px);
+    --dk-fs-sm: clamp(12px, 0.78rem + 0.2vw, 13px);
+    --dk-fs-md: clamp(13px, 0.84rem + 0.3vw, 14px); /* body */
+    --dk-fs-lg: clamp(14px, 0.9rem + 0.35vw, 16px);
+    --dk-fs-xl: clamp(16px, 1rem + 0.5vw, 18px);
+    --dk-fs-2xl: clamp(18px, 1.05rem + 0.9vw, 22px);
+
+    /* motion & easing */
+    --dk-dur-fast: 120ms;
+    --dk-dur: 180ms;
+    --dk-dur-slow: 280ms;
+    --dk-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dk-ease-in: cubic-bezier(0.32, 0, 0.67, 0);
+
+    /* focus ring */
+    --dk-focus-ring-width: 2px;
+    --dk-focus-ring-offset: 2px;
+
+    /* shadows */
+    --dk-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.06);
+    --dk-shadow-2: 0 4px 10px rgba(0, 0, 0, 0.16);
+    --dk-shadow-3: 0 8px 28px rgba(0, 0, 0, 0.28); /* your default */
+
+    /* layout aliases (semantic) */
+    --dk-gap: var(--dk-space-3); /* 12px default */
+    --dk-radius: var(--dk-radius-md);
+    --dk-toggle-size: var(--dk-size-4);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    :host {
+        --dk-dur-fast: 0ms;
+        --dk-dur: 0ms;
+        --dk-dur-slow: 0ms;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* 2) COLOR THEMES (semantic tokens built from palettes)               */
+/*    Dark is default; Light opt-in via attribute or context.          */
+/*    Use OKLCH for better perceptual mixing when supported.           */
+/* ------------------------------------------------------------------ */
+
+/* Dark (default) */
+:host {
+    /* neutrals */
     --dk-bg: #101114;
     --dk-bg-2: #111318cc;
     --dk-bg-3: #15171c;
     --dk-surface: #14161a;
     --dk-border: #23252b;
+
+    /* text */
     --dk-fg: #cfcfcf;
     --dk-fg-muted: #9aa0a6;
-    --dk-accent: #8ab4ff;
-    --dk-accent-strong: #4d8eff;
+
+    /* accent */
+    --dk-accent: oklch(0.77 0.09 255 / 1); /* ~#8ab4ff */
+    --dk-accent-strong: oklch(0.68 0.14 255); /* ~#4d8eff */
     --dk-accent-emphasis: color-mix(
         in oklab,
         var(--dk-accent) 70%,
         transparent
     );
     --dk-accent-subtle: color-mix(in oklab, var(--dk-accent) 25%, transparent);
-    --dk-accent-faint: color-mix(in oklab, var(--dk-accent) 22%, transparent);
+    --dk-accent-faint: color-mix(in oklab, var(--dk-accent) 18%, transparent);
     --dk-accent-border: color-mix(
         in oklab,
-        var(--dk-accent) 65%,
+        var(--dk-accent) 60%,
         var(--dk-border)
     );
-    --dk-outline-error: rgba(255, 80, 80, 0.85);
-    --dk-outline-info: rgba(50, 150, 255, 0.9);
     --dk-on-accent: var(--dk-bg);
-    --dk-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+
+    /* states */
+    --dk-info: oklch(0.78 0.09 255); /* blue */
+    --dk-success: oklch(0.78 0.12 150); /* green */
+    --dk-warning: oklch(0.85 0.14 85); /* amber */
+    --dk-danger: oklch(0.7 0.19 25); /* red  */
+    --dk-outline-info: rgba(50, 150, 255, 0.9);
+    --dk-outline-error: rgba(255, 80, 80, 0.85);
+
+    /* shadows (dark tuning) */
+    --dk-shadow: var(--dk-shadow-3);
 }
 
-/* Light theme opt-in via attribute or context */
+/* Light theme via attribute or light context (вне media) */
 :host([theme="light"]),
-:host(:not([theme="dark"])):host-context([data-theme="light"]) {
+:host(:not([theme="dark"])):host-context([data-theme="light"]),
+:host(:not([theme="dark"])):host-context([theme="light"]) {
     --dk-bg: #ffffff;
     --dk-bg-2: #ffffffcc;
     --dk-bg-3: #f5f6f8;
     --dk-surface: #ffffff;
     --dk-border: #e3e5ea;
+
     --dk-fg: #0b0c0f;
     --dk-fg-muted: #4b4f59;
-    --dk-accent: #2f7dff;
-    --dk-accent-strong: #1a5fff;
+
+    --dk-accent: oklch(0.72 0.15 255);
+    --dk-accent-strong: oklch(0.64 0.2 255);
+    --dk-accent-emphasis: color-mix(
+        in oklab,
+        var(--dk-accent) 70%,
+        transparent
+    );
+    --dk-accent-subtle: color-mix(in oklab, var(--dk-accent) 20%, transparent);
+    --dk-accent-faint: color-mix(in oklab, var(--dk-accent) 14%, transparent);
+    --dk-accent-border: color-mix(
+        in oklab,
+        var(--dk-accent) 55%,
+        var(--dk-border)
+    );
     --dk-on-accent: var(--dk-fg);
+
+    --dk-info: oklch(0.6 0.17 255);
+    --dk-success: oklch(0.63 0.17 150);
+    --dk-warning: oklch(0.77 0.17 85);
+    --dk-danger: oklch(0.55 0.22 25);
+
     --dk-shadow: 0 8px 28px rgba(16, 24, 40, 0.18);
 }
 
-/* Compact density opt-in */
+/* Light theme via prefers-color-scheme (медиа-запрос отдельно) */
+@media (prefers-color-scheme: light) {
+    :host(:not([theme="dark"])) {
+        --dk-bg: #ffffff;
+        --dk-bg-2: #ffffffcc;
+        --dk-bg-3: #f5f6f8;
+        --dk-surface: #ffffff;
+        --dk-border: #e3e5ea;
+
+        --dk-fg: #0b0c0f;
+        --dk-fg-muted: #4b4f59;
+
+        --dk-accent: oklch(0.72 0.15 255);
+        --dk-accent-strong: oklch(0.64 0.2 255);
+        --dk-accent-emphasis: color-mix(
+            in oklab,
+            var(--dk-accent) 70%,
+            transparent
+        );
+        --dk-accent-subtle: color-mix(
+            in oklab,
+            var(--dk-accent) 20%,
+            transparent
+        );
+        --dk-accent-faint: color-mix(
+            in oklab,
+            var(--dk-accent) 14%,
+            transparent
+        );
+        --dk-accent-border: color-mix(
+            in oklab,
+            var(--dk-accent) 55%,
+            var(--dk-border)
+        );
+        --dk-on-accent: var(--dk-fg);
+
+        --dk-info: oklch(0.6 0.17 255);
+        --dk-success: oklch(0.63 0.17 150);
+        --dk-warning: oklch(0.77 0.17 85);
+        --dk-danger: oklch(0.55 0.22 25);
+
+        --dk-shadow: 0 8px 28px rgba(16, 24, 40, 0.18);
+    }
+}
+
+/* Explicit dark attribute or dark context (wins over prefers-color-scheme) */
+:host([theme="dark"]),
+:host(:not([theme="light"])):host-context([data-theme="dark"]),
+:host(:not([theme="light"])):host-context([theme="dark"]) {
+    /* (colors already defined in default block) */
+}
+
+/* ------------------------------------------------------------------ */
+/* 3) SEMANTIC ALIASES (use these in components)                       */
+/* ------------------------------------------------------------------ */
+:host {
+    /* backgrounds & surfaces */
+    --dk-color-bg: var(--dk-bg);
+    --dk-color-bg-2: var(--dk-bg-2);
+    --dk-color-bg-3: var(--dk-bg-3);
+    --dk-color-surface: var(--dk-surface);
+
+    /* text */
+    --dk-color-text: var(--dk-fg);
+    --dk-color-text-muted: var(--dk-fg-muted);
+    --dk-color-on-accent: var(--dk-on-accent);
+
+    /* borders */
+    --dk-color-border: var(--dk-border);
+    --dk-color-border-accent: var(--dk-accent-border);
+
+    /* accent & states */
+    --dk-color-accent: var(--dk-accent);
+    --dk-color-accent-strong: var(--dk-accent-strong);
+    --dk-color-accent-emphasis: var(--dk-accent-emphasis);
+    --dk-color-accent-subtle: var(--dk-accent-subtle);
+    --dk-color-accent-faint: var(--dk-accent-faint);
+
+    --dk-color-info: var(--dk-info);
+    --dk-color-success: var(--dk-success);
+    --dk-color-warning: var(--dk-warning);
+    --dk-color-danger: var(--dk-danger);
+
+    /* shadows & focus */
+    --dk-elevation-1: var(--dk-shadow-1);
+    --dk-elevation-2: var(--dk-shadow-2);
+    --dk-elevation-3: var(--dk-shadow);
+    --dk-focus-ring: 0 0 0 var(--dk-focus-ring-offset)
+            color-mix(in oklab, var(--dk-color-bg) 100%, transparent),
+        0 0 0 calc(var(--dk-focus-ring-offset) + var(--dk-focus-ring-width))
+            var(--dk-color-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* 4) DENSITY MODES                                                    */
+/*    Default = "cozy". Opt-in: density="compact" or "comfortable".    */
+/* ------------------------------------------------------------------ */
+:host {
+    --dk-density: 1; /* cozy */
+    --dk-gap: var(--dk-space-3);
+    --dk-padding-y: var(--dk-space-2);
+    --dk-padding-x: var(--dk-space-3);
+    --dk-control-h: var(--dk-size-3);
+}
+
 :host([density="compact"]) {
-    --dk-gap: 8px;
-    --dk-radius: 10px;
+    --dk-density: 0.9;
+    --dk-gap: var(--dk-space-2);
+    --dk-padding-y: var(--dk-space-1);
+    --dk-padding-x: var(--dk-space-2);
+    --dk-control-h: var(--dk-size-2);
+    --dk-radius: var(--dk-radius-md); /* keep tactile corners */
+}
+
+:host([density="comfortable"]) {
+    --dk-density: 1.1;
+    --dk-gap: var(--dk-space-4);
+    --dk-padding-y: var(--dk-space-3);
+    --dk-padding-x: var(--dk-space-4);
+    --dk-control-h: calc(var(--dk-size-4) + 0.25rem);
+    --dk-radius: var(--dk-radius-lg);
+}
+
+/* ------------------------------------------------------------------ */
+/* 5) TYPOGRAPHY ALIASES                                               */
+/* ------------------------------------------------------------------ */
+:host {
+    font: var(--dk-font-base);
+    --dk-text-xs: var(--dk-fs-xs);
+    --dk-text-sm: var(--dk-fs-sm);
+    --dk-text-md: var(--dk-fs-md);
+    --dk-text-lg: var(--dk-fs-lg);
+    --dk-text-xl: var(--dk-fs-xl);
+    --dk-text-2xl: var(--dk-fs-2xl);
+}
+
+/* ------------------------------------------------------------------ */
+/* 6) EXAMPLE ROLE TOKENS (for components to consume)                  */
+/* ------------------------------------------------------------------ */
+:host {
+    /* buttons */
+    --btn-bg: var(--dk-color-accent);
+    --btn-text: var(--dk-color-on-accent);
+    --btn-bg-hover: color-mix(in oklab, var(--dk-color-accent) 88%, black 12%);
+    --btn-bg-active: color-mix(in oklab, var(--dk-color-accent) 76%, black 24%);
+    --btn-border: var(--dk-color-border-accent);
+    --btn-shadow: var(--dk-elevation-1);
+
+    /* inputs */
+    --input-bg: var(--dk-color-bg-3);
+    --input-text: var(--dk-color-text);
+    --input-border: var(--dk-color-border);
+    --input-border-hover: color-mix(
+        in oklab,
+        var(--dk-color-border) 70%,
+        var(--dk-color-accent) 30%
+    );
+    --input-border-focus: var(--dk-color-accent);
+
+    /* cards */
+    --card-bg: var(--dk-color-surface);
+    --card-border: var(--dk-color-border);
+    --card-shadow: var(--dk-elevation-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* 7) ACCESSIBILITY HELPERS                                            */
+/* ------------------------------------------------------------------ */
+:host(:focus-visible),
+:host *:focus-visible {
+    outline: none;
+    box-shadow: var(--dk-focus-ring);
+}
+
+/* High-contrast mode support (forced colors) */
+@media (forced-colors: active) {
+    :host {
+        --dk-color-accent: CanvasText;
+        --dk-color-border: GrayText;
+        --dk-color-text: CanvasText;
+        --dk-color-bg: Canvas;
+        --dk-color-surface: Canvas;
+        --dk-shadow: none;
+    }
 }
