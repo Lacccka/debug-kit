@@ -1,5 +1,7 @@
 # Debug-Kit
 
+[![CI](https://github.com/your-org/debug-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/debug-kit/actions/workflows/ci.yml)
+
 Универсальный инструмент для фронтенд-разработки и отладки.  
 Можно быстро подключить к любому сайту (свой, чужой, тестовый).
 
