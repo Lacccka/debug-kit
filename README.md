@@ -159,7 +159,7 @@ node server.js
     -   Ошибки (`onerror`, `unhandledrejection`).
     -   Сеть (fetch/xhr).
 -   **Text Tool**
-    -   Изменение текста и адаптивный размер (min/max). (Edit text with responsive font size.)
+    -   Изменение текста и адаптивный размер (min/max). Выбор элемента кликом. (Edit text with responsive font size; pick target by clicking.)
 
 ---
 
