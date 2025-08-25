@@ -2,7 +2,7 @@ import { renderList } from "./search.js";
 import { renderGlobalSettings } from "./settings-global.js";
 
 export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
-    const root = shadowRoot.querySelector(".dk-root");
+    const root = shadowRoot.querySelector(".dk-panel-root");
     const panel = shadowRoot.querySelector(".dk-panel");
     let locked = storage.getItem(ns + "panelLock", "0") === "1";
 

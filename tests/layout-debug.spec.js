@@ -20,9 +20,9 @@ global.PerformanceObserver = class {
 };
 
 // hud layer required by hud factory
-const hudLayer = document.createElement("div");
-hudLayer.className = "dk-hud-layer";
-document.body.appendChild(hudLayer);
+const hudRoot = document.createElement("div");
+hudRoot.className = "dk-hud-root";
+document.body.appendChild(hudRoot);
 
 // element without overflow
 const normal = document.createElement("div");

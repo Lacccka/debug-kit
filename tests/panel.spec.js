@@ -4,7 +4,7 @@ import { createPanel } from "../src/ui/panel/panel.js";
 import { storage } from "../src/core/storage.js";
 
 const dom = new JSDOM(
-    '<!DOCTYPE html><html><body><div class="dk-root"></div><div class="dk-panel"></div></body></html>',
+    '<!DOCTYPE html><html><body><div class="dk-panel-root"></div><div class="dk-panel"></div></body></html>',
     { url: "http://localhost", pretendToBeVisual: true }
 );
 const { window } = dom;

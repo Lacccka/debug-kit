@@ -3,7 +3,7 @@ import { JSDOM } from "jsdom";
 import { LighthouseTool } from "../src/tools/lighthouse/index.js";
 
 const dom = new JSDOM(
-    '<!DOCTYPE html><html><body><div class="dk-hud-layer"></div></body></html>',
+    '<!DOCTYPE html><html><body><div class="dk-hud-root"></div></body></html>',
     { url: "http://localhost", pretendToBeVisual: true }
 );
 const { window } = dom;

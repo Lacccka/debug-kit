@@ -7,7 +7,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
     const POS_KEY = ns + "positions";
     const STATE_KEY = ns + "hudstate";
     const THEME_KEY = ns + "theme";
-    const hudLayer = shadowRoot.querySelector(".dk-hud-layer");
+    const hudRoot = shadowRoot.querySelector(".dk-hud-root");
 
     function clamp(val, min, max) {
         return Math.max(min, Math.min(val, max));
@@ -40,7 +40,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
 
         hud.appendChild(hdr);
         hud.appendChild(body);
-        hudLayer.appendChild(hud);
+        hudRoot.appendChild(hud);
 
         const enforceBounds = () => {
             let w = baseWidth;

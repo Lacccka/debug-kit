@@ -12,9 +12,9 @@ global.window = window;
 global.document = window.document;
 global.localStorage = window.localStorage;
 
-const hudLayer = document.createElement("div");
-hudLayer.className = "dk-hud-layer";
-document.body.appendChild(hudLayer);
+const hudRoot = document.createElement("div");
+hudRoot.className = "dk-hud-root";
+document.body.appendChild(hudRoot);
 
 const target = document.createElement("div");
 document.body.appendChild(target);

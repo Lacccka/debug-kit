@@ -18,10 +18,10 @@ global.innerWidth = window.innerWidth = 100;
 global.innerHeight = window.innerHeight = 200;
 global.visualViewport = { scale: 1 };
 
-// hud layer required by hud factory
-const hudLayer = document.createElement("div");
-hudLayer.className = "dk-hud-layer";
-document.body.appendChild(hudLayer);
+// hud root required by hud factory
+const hudRoot = document.createElement("div");
+hudRoot.className = "dk-hud-root";
+document.body.appendChild(hudRoot);
 
 // element without overflow
 const normal = document.createElement("div");
