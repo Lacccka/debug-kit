@@ -5,13 +5,13 @@
     background: var(--dk-surface);
     color: var(--dk-fg);
     border: var(--dk-border-width) solid var(--dk-border);
-    border-radius: 8px;
-    padding: var(--dk-space-md) 10px;
+    border-radius: var(--dk-radius);
+    padding: var(--dk-space-md) var(--dk-gap);
     box-shadow: var(--dk-shadow);
     font-size: 12px;
     line-height: 1.35;
     z-index: calc(var(--dk-z) + 1);
-    transform: translateY(4px);
+    transform: translateY(var(--dk-space-sm));
     opacity: 0;
     transition: opacity 0.12s ease, transform 0.12s ease;
 }
@@ -24,8 +24,8 @@
 .dk-tip::after {
     content: "";
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: var(--dk-space-md);
+    height: var(--dk-space-md);
     background: inherit;
     border-left: var(--dk-border-width) solid var(--dk-border);
     border-top: var(--dk-border-width) solid var(--dk-border);
@@ -34,21 +34,21 @@
 
 /* Placement modifiers */
 .dk-tip[data-placement="top"]::after {
-    bottom: -4px;
-    left: 12px;
+    bottom: calc(var(--dk-space-sm) * -1);
+    left: var(--dk-radius);
 }
 .dk-tip[data-placement="bottom"]::after {
-    top: -4px;
-    left: 12px;
+    top: calc(var(--dk-space-sm) * -1);
+    left: var(--dk-radius);
     transform: rotate(225deg);
 }
 .dk-tip[data-placement="left"]::after {
-    right: -4px;
-    top: 10px;
+    right: calc(var(--dk-space-sm) * -1);
+    top: var(--dk-gap);
     transform: rotate(135deg);
 }
 .dk-tip[data-placement="right"]::after {
-    left: -4px;
-    top: 10px;
+    left: calc(var(--dk-space-sm) * -1);
+    top: var(--dk-gap);
     transform: rotate(-45deg);
 }
