@@ -39,7 +39,7 @@ export const GuardTool = {
         const off1 = ctx.bus.on && ctx.bus.on("viewport:change", update);
         update();
 
-        btnScan.onclick = scanOverflow;
+        btnScan.onclick = () => scanOverflow();
 
         cleanup = () => {
             off1 && off1();

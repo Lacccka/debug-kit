@@ -49,9 +49,16 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
                 hud.style.minWidth = w + "px";
                 hud.style.width = w + "px";
             }
+            // keep HUD within viewport
+            const r = hud.getBoundingClientRect();
+            const maxX = innerWidth - r.width - 8;
+            const maxY = innerHeight - r.height - 8;
+            hud.style.left = clamp(r.left, 8, Math.max(8, maxX)) + "px";
+            hud.style.top = clamp(r.top, 8, Math.max(8, maxY)) + "px";
         };
         const offVpt =
             bus && bus.on ? bus.on("viewport:change", enforceBounds) : null;
+        window.addEventListener("resize", enforceBounds);
         enforceBounds();
 
         // восстановление позиции
@@ -165,6 +172,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
                 window.removeEventListener("touchend", onUp);
                 hdr.removeEventListener("click", onHdrClick);
                 offVpt && offVpt();
+                window.removeEventListener("resize", enforceBounds);
                 hud.remove();
             },
         };

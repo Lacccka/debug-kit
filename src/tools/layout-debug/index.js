@@ -51,7 +51,7 @@ export const LayoutDebugTool = {
             clsLabel.textContent = "CLS: 0.0000";
         };
 
-        btnOverflow.onclick = scanOverflow;
+        btnOverflow.onclick = () => scanOverflow();
 
         cleanup = () => {
             clsObs.disconnect();
