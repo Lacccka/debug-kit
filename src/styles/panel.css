@@ -334,6 +334,145 @@
     color: var(--dk-color-success);
 }
 
+/* Switch */
+.dk-switch {
+    position: relative;
+    display: inline-block;
+    inline-size: calc(var(--dk-control-h) * 2);
+    block-size: var(--dk-control-h);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* нативный input — визуально скрыт, но доступен */
+.dk-switch__input,
+.dk-switch input[type="checkbox"] {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* трек */
+.dk-switch .slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: var(--dk-color-bg-3);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
+    border-radius: var(--dk-radius-pill);
+    box-shadow: var(--dk-elevation-1);
+    transition: background var(--dk-dur) var(--dk-ease-out),
+        border-color var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out);
+}
+
+/* бегунок */
+.dk-switch .slider::before {
+    content: "";
+    position: absolute;
+    inset-block-start: var(--dk-space-1);
+    inset-inline-start: var(--dk-space-1);
+    inline-size: calc(var(--dk-control-h) - var(--dk-space-2));
+    block-size: calc(var(--dk-control-h) - var(--dk-space-2));
+    background: var(--dk-color-surface);
+    border-radius: var(--dk-radius-pill);
+    box-shadow: var(--dk-elevation-2);
+    transition: transform var(--dk-dur) var(--dk-ease-out),
+        background var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out);
+    will-change: transform;
+}
+
+/* hover */
+.dk-switch:hover .slider {
+    border-color: color-mix(
+        in oklab,
+        var(--dk-color-border) 65%,
+        var(--dk-color-accent) 35%
+    );
+    box-shadow: var(--dk-elevation-2);
+}
+
+/* active feedback */
+.dk-switch:active .slider::before {
+    transform: translateX(0) scale(0.96);
+}
+
+/* focus-visible (идёт с input) */
+.dk-switch:has(input:focus-visible) .slider {
+    box-shadow: var(--dk-focus-ring), var(--dk-elevation-2);
+    border-color: transparent;
+}
+
+/* checked (через input) */
+.dk-switch input:checked + .slider {
+    background: var(--dk-color-accent-emphasis);
+    border-color: var(--dk-color-border-accent);
+}
+.dk-switch input:checked + .slider::before {
+    /* переводим на ширину трека - ширину бегунка:
+       при твоей системе отступов translateX(var(--dk-control-h)) даёт точное попадание */
+    transform: translateX(var(--dk-control-h));
+    background: var(--dk-color-on-accent);
+    box-shadow: var(--dk-elevation-1);
+}
+
+/* альтернативные источники статуса (headless) */
+.dk-switch[aria-checked="true"] .slider,
+.dk-switch[data-state="on"] .slider {
+    background: var(--dk-color-accent-emphasis);
+    border-color: var(--dk-color-border-accent);
+}
+.dk-switch[aria-checked="true"] .slider::before,
+.dk-switch[data-state="on"] .slider::before {
+    transform: translateX(var(--dk-control-h));
+    background: var(--dk-color-on-accent);
+}
+
+/* disabled */
+.dk-switch:has(input:disabled),
+.dk-switch[aria-disabled="true"],
+.dk-switch[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.dk-switch:has(input:disabled) .slider {
+    box-shadow: none;
+}
+
+/* размеры модификаторами (опционально) */
+.dk-switch--sm {
+    inline-size: calc(var(--dk-control-h) * 1.75);
+}
+.dk-switch--lg {
+    inline-size: calc(var(--dk-control-h) * 2.25);
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .dk-switch .slider,
+    .dk-switch .slider::before {
+        transition: none !important;
+    }
+}
+
+/* high contrast */
+@media (forced-colors: active) {
+    .dk-switch .slider,
+    .dk-switch .slider::before {
+        background: Canvas;
+        color: CanvasText;
+        border-color: GrayText;
+        box-shadow: none;
+    }
+}
 /* Inline controls row */
 .dk-controls {
     display: flex;
