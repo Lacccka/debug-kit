@@ -17,6 +17,7 @@ import { GridOverlayTool } from "./tools/grid-overlay/index.js";
 import { LayoutDebugTool } from "./tools/layout-debug/index.js";
 import { PerfHudTool } from "./tools/perf-hud/index.js";
 import { LoggerTool } from "./tools/logger/index.js";
+import { InspectorTool } from "./tools/inspector/index.js";
 
 const ns = "debugkit:v1:";
 
@@ -52,6 +53,7 @@ const ns = "debugkit:v1:";
     reg.registerTool(LayoutDebugTool);
     reg.registerTool(PerfHudTool);
     reg.registerTool(LoggerTool);
+    reg.registerTool(InspectorTool);
 
     // Автовключение ранее активных инструментов
     reg.autoload();
