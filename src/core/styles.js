@@ -178,6 +178,12 @@ export const BASE_CSS = `
 
 /* utility */
 .dk-sep{height:1px;background:var(--dk-border);margin:.25rem 0}
+/* overlays */
+.dk-overlay{position:fixed;inset:0;pointer-events:none}
+.dk-grid-overlay{z-index:1}
+.dk-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);pointer-events:auto;opacity:0;transition:opacity .18s ease-out;visibility:hidden}
+.dk-backdrop.open{opacity:1;visibility:visible}
+.dk-overlay--passthrough{pointer-events:none}
 `;
 
 /**
