@@ -29,7 +29,7 @@ export const LoggerTool = {
 
         const view = document.createElement("div");
         const controls = document.createElement("div");
-        controls.classList.add("dk-mb-md");
+        controls.classList.add("dk-mb-2");
 
         const btnPause = document.createElement("button");
         const updatePause = () => {
@@ -45,7 +45,7 @@ export const LoggerTool = {
 
         const addCheck = (labelText, key) => {
             const label = document.createElement("label");
-            label.classList.add("dk-ml-md");
+            label.classList.add("dk-mb-2");
             const chk = document.createElement("input");
             chk.type = "checkbox";
             chk.checked = state[key];
