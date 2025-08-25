@@ -1,17 +1,20 @@
-// Небольшая заглушка сборки: на реальном проекте подключите esbuild/rollup.
-// Здесь просто склеиваем src в один файл (очень грубо, для демонстрации подхода).
 import fs from "fs";
-import path from "path";
+import esbuild from "esbuild";
 
-const outDir = "dist";
-fs.mkdirSync(outDir, { recursive: true });
-const banner = "(function(){\n";
-const footer = "\n})();\n";
-const entry = "src/index.js";
-const src = fs.readFileSync(entry, "utf8");
-fs.writeFileSync(
-    path.join(outDir, "debugkit.js"),
-    banner + src + footer,
-    "utf8"
-);
-console.log("Wrote dist/debugkit.js (demo bundler).");
+const outFile = "dist/debugkit.js";
+fs.mkdirSync("dist", { recursive: true });
+
+try {
+    await esbuild.build({
+        entryPoints: ["src/index.js"],
+        bundle: true,
+        format: "iife",
+        minify: true,
+        sourcemap: true,
+        outfile: outFile,
+    });
+    console.log(`Wrote ${outFile}.`);
+} catch (err) {
+    console.error(err);
+    process.exit(1);
+}
