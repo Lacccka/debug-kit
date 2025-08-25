@@ -10,7 +10,8 @@ const BASE_CSS = `
 
 /* toggle */
 .dk-root{position:fixed;bottom:16px;right:16px;pointer-events:auto}
-.dk-toggle{width:40px;height:40px;border-radius:999px;background:var(--dk-bg);color:var(--dk-fg);box-shadow:var(--dk-shadow);display:grid;place-items:center;cursor:pointer}
+.dk-toggle{width:40px;height:40px;border-radius:999px;background:var(--dk-bg);color:var(--dk-fg);box-shadow:var(--dk-shadow);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.dk-toggle:hover{background:var(--dk-accent);color:#fff}
 
 /* panel */
 .dk-panel{position:fixed;bottom:64px;right:16px;width:360px;max-height:70vh;

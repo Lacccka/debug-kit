@@ -1,3 +1,21 @@
+.dk-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--dk-bg);
+    color: var(--dk-fg);
+    box-shadow: var(--dk-shadow);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dk-toggle:hover {
+    background: var(--dk-accent);
+    color: #fff;
+}
+
 .dk-panel {
     backdrop-filter: saturate(120%) blur(8px);
 }
