@@ -14,24 +14,20 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
     return function createHud(toolId, title, { width = 280, icon = "" } = {}) {
         const hud = document.createElement("div");
         hud.className = "dk-hud";
-        hud.style.pointerEvents = "auto";
-        hud.style.zIndex = "1";
-        hud.style.left = "16px";
-        hud.style.top = "16px";
 
         const baseWidth = Math.max(240, Math.min(320, width));
         const hdr = document.createElement("div");
         hdr.className = "hdr";
-        hdr.innerHTML = `<span class="ic">${icon}</span><strong style="font-weight:600;margin-left:4px">${title}</strong>
-      <span style="margin-left:auto;display:flex;gap:6px">
-        <button class="btn-pin" title="Pin" style="cursor:pointer">📌</button>
-        <button class="btn-set" title="Settings" style="cursor:pointer">⚙️</button>
-        <button class="btn-min" title="Свернуть" style="cursor:pointer">—</button>
-        <button class="btn-close" title="Закрыть" style="cursor:pointer">×</button>
+        hdr.innerHTML = `<span class="ic">${icon}</span><strong class="ttl">${title}</strong>
+      <span class="btns">
+        <button class="btn btn-pin" title="Pin">📌</button>
+        <button class="btn btn-set" title="Settings">⚙️</button>
+        <button class="btn btn-min" title="Свернуть">—</button>
+        <button class="btn btn-close" title="Закрыть">×</button>
       </span>`;
 
         const body = document.createElement("div");
-        body.style.padding = "8px 10px";
+        body.className = "bd";
 
         hud.appendChild(hdr);
         hud.appendChild(body);

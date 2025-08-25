@@ -18,6 +18,9 @@
     overflow: hidden;
     will-change: transform; /* hint for smoother drag */
     transition: background 0.2s, box-shadow 0.2s;
+    z-index: 1;
+    left: 16px;
+    top: 16px;
 }
 
 .dk-hud .hdr {
@@ -31,4 +34,23 @@
     cursor: move;
     user-select: none;
     transition: background 0.2s;
+}
+
+.dk-hud .bd {
+    padding: 8px 10px;
+}
+
+.dk-hud .hdr .ttl {
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.dk-hud .hdr .btns {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+}
+
+.dk-hud .btn {
+    cursor: pointer;
 }
