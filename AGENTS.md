@@ -28,3 +28,8 @@ Before committing:
 -   Place source files in `src/`.
 -   Add tools under `src/tools/` and UI components under `src/ui/`.
 -   Keep documentation in Markdown files alongside the code they describe.
+
+## Documentation
+
+-   Keep README and CHANGELOG up to date with code changes.
+-   Provide Russian documentation with English summaries where helpful.
