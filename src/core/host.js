@@ -24,10 +24,10 @@ export function createHost() {
     panel.style.zIndex = "2";
     shadowRoot.appendChild(panel);
 
-    const hudLayer = document.createElement("div");
-    hudLayer.className = "dk-hud-layer";
-    hudLayer.style.pointerEvents = "none";
-    hudLayer.style.zIndex = "2";
-    shadowRoot.appendChild(hudLayer);
-    return { host, shadowRoot, root, panel, hudLayer };
+    const hudRoot = document.createElement("div");
+    hudRoot.className = "dk-hud-root";
+    hudRoot.style.pointerEvents = "none";
+    hudRoot.style.zIndex = "2";
+    shadowRoot.appendChild(hudRoot);
+    return { host, shadowRoot, root, panel, hudRoot };
 }
