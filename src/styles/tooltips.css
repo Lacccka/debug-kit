@@ -1,32 +1,54 @@
-
 /* tooltips.css — simple adaptive tooltip */
 .dk-tip {
-  position: fixed;
-  max-width: 320px;
-  background: var(--dk-surface);
-  color: var(--dk-fg);
-  border: 1px solid var(--dk-border);
-  border-radius: 8px;
-  padding: 8px 10px;
-  box-shadow: var(--dk-shadow);
-  font-size: 12px;
-  line-height: 1.35;
-  z-index: calc(var(--dk-z) + 1);
-  transform: translateY(4px);
-  opacity: 0;
-  transition: opacity .12s ease, transform .12s ease;
+    position: fixed;
+    max-width: 320px;
+    background: var(--dk-surface);
+    color: var(--dk-fg);
+    border: 1px solid var(--dk-border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    box-shadow: var(--dk-shadow);
+    font-size: 12px;
+    line-height: 1.35;
+    z-index: calc(var(--dk-z) + 1);
+    transform: translateY(4px);
+    opacity: 0;
+    transition: opacity 0.12s ease, transform 0.12s ease;
 }
-.dk-tip[data-open="true"] { opacity: 1; transform: none; }
+.dk-tip[data-open="true"] {
+    opacity: 1;
+    transform: none;
+}
 
 /* Arrow */
 .dk-tip::after {
-  content: ""; position: absolute; width: 8px; height: 8px;
-  background: inherit; border-left: 1px solid var(--dk-border); border-top: 1px solid var(--dk-border);
-  transform: rotate(45deg);
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: inherit;
+    border-left: 1px solid var(--dk-border);
+    border-top: 1px solid var(--dk-border);
+    transform: rotate(45deg);
 }
 
 /* Placement modifiers */
-.dk-tip[data-placement="top"]::after { bottom: -4px; left: 12px; }
-.dk-tip[data-placement="bottom"]::after { top: -4px; left: 12px; transform: rotate(225deg); }
-.dk-tip[data-placement="left"]::after { right: -4px; top: 10px; transform: rotate(135deg); }
-.dk-tip[data-placement="right"]::after { left: -4px; top: 10px; transform: rotate(-45deg); }
+.dk-tip[data-placement="top"]::after {
+    bottom: -4px;
+    left: 12px;
+}
+.dk-tip[data-placement="bottom"]::after {
+    top: -4px;
+    left: 12px;
+    transform: rotate(225deg);
+}
+.dk-tip[data-placement="left"]::after {
+    right: -4px;
+    top: 10px;
+    transform: rotate(135deg);
+}
+.dk-tip[data-placement="right"]::after {
+    left: -4px;
+    top: 10px;
+    transform: rotate(-45deg);
+}
