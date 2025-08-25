@@ -7,6 +7,14 @@
 
 ## 🛠 Установка
 
+Из npm:
+
+```bash
+npm install debug-kit
+```
+
+Для разработки:
+
 ```bash
 git clone https://github.com/your-org/debug-kit.git
 cd debug-kit
@@ -23,10 +31,15 @@ npm run size
 
 ## 🔌 Подключение на страницу
 
+Бандлы:
+
+-   `dist/debugkit.iife.js` — для подключения через `<script>` (глобальная переменная `DebugKit`).
+-   `dist/debugkit.esm.js` — для прямого `import`.
+
 ### ESM
 
 ```js
-import "./dist/debugkit.js";
+import DebugKit from "debug-kit";
 
 DebugKit.enableTool("guard");
 ```
@@ -34,7 +47,7 @@ DebugKit.enableTool("guard");
 ### Script
 
 ```html
-<script src="/dist/debugkit.js"></script>
+<script src="node_modules/debug-kit/dist/debugkit.iife.js"></script>
 <script>
     DebugKit.enableTool("guard");
 </script>

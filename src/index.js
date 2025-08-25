@@ -1,5 +1,5 @@
 // src/index.js — вход проекта: инициализация ядра и регистрация инструментов
-// В реальном билде это собирается в dist/debugkit.js (IIFE/UMD).
+// В реальном билде это собирается в dist/debugkit.iife.js и dist/debugkit.esm.js.
 
 import { createHost } from "./core/host.js";
 import { createBus } from "./core/bus.js";

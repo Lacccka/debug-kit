@@ -1,19 +1,28 @@
 import fs from "fs";
 import esbuild from "esbuild";
 
-const outFile = "dist/debugkit.js";
+// Build both browser (IIFE) and ESM bundles.
 fs.mkdirSync("dist", { recursive: true });
 
+const builds = [
+    { file: "dist/debugkit.iife.js", format: "iife" },
+    { file: "dist/debugkit.esm.js", format: "esm" },
+];
+
 try {
-    await esbuild.build({
-        entryPoints: ["src/index.js"],
-        bundle: true,
-        format: "iife",
-        minify: true,
-        sourcemap: true,
-        outfile: outFile,
-    });
-    console.log(`Wrote ${outFile}.`);
+    await Promise.all(
+        builds.map(({ file, format }) =>
+            esbuild.build({
+                entryPoints: ["src/index.js"],
+                bundle: true,
+                format,
+                minify: true,
+                sourcemap: true,
+                outfile: file,
+            })
+        )
+    );
+    console.log("Wrote dist/debugkit.iife.js and dist/debugkit.esm.js.");
 } catch (err) {
     console.error(err);
     process.exit(1);
