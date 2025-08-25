@@ -3,6 +3,41 @@
 Универсальный инструмент для фронтенд-разработки и отладки.  
 Можно быстро подключить к любому сайту (свой, чужой, тестовый).
 
+## 🛠 Установка
+
+```bash
+git clone https://github.com/your-org/debug-kit.git
+cd debug-kit
+npm install
+```
+
+## 🔧 Сборка и тесты
+
+```bash
+npm run build
+npm test
+npm run size
+```
+
+## 🔌 Подключение на страницу
+
+### ESM
+
+```js
+import "./dist/debugkit.js";
+
+DebugKit.enableTool("guard");
+```
+
+### Script
+
+```html
+<script src="/dist/debugkit.js"></script>
+<script>
+    DebugKit.enableTool("guard");
+</script>
+```
+
 ---
 
 ## ✨ Возможности
