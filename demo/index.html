@@ -1,18 +1,104 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Debug-Kit Demo</title>
+  <title>Debug: Шифты, оверфлоу и перекрытия</title>
   <link rel="stylesheet" href="./demo.css" />
 </head>
 
 <body>
+  <!-- ФИКСИРОВАННЫЙ ХЕДЕР БЕЗ КОМПЕНСАЦИИ ПОД КОНТЕНТ (перекрывает начало main) -->
+  <header class="site-header fixed-header">
+    <div class="wrap">
+      <strong>⚠️ Фикс-хедер без отступа</strong>
+      <nav class="nav">
+        <a href="#">Главная</a>
+        <a href="#">Статьи</a>
+        <a href="#">О нас</a>
+      </nav>
+      <button id="toggle-outlines" class="btn">Показать границы</button>
+    </div>
+  </header>
+
+  <!-- HERO с анимацией, которая ПОСЛЕ ЗАГРУЗКИ меняет наружные отступы → заметный сдвиг контента -->
+  <section class="hero">
+    <div class="wrap">
+      <h1>Площадка для отладки вёрстки</h1>
+      <p>На этой странице намеренно допущены проблемы в <em>раскладке</em> (layout): сдвиги, горизонтальный скролл и
+        перекрытия.</p>
+    </div>
+  </section>
+
+  <!-- ПОЛОСА 100vw + внутренние поля и бордеры → гарантированный горизонтальный оверфлоу -->
+  <section class="stripe">
+    <div class="stripe__inner">
+      <p>Эта полоса шириной 100vw + паддинги/бордеры — должна вызвать горизонтальный скролл.</p>
+    </div>
+  </section>
+
   <main>
-    <h1>Debug-Kit demo</h1>
-    <p>Откройте/закройте панель Alt+D или кликните по тогглеру.</p>
+    <div class="wrap">
+      <!-- ГАЛЕРЕЯ: изображения без width/height атрибутов (вызывают reflow при определении размеров) -->
+      <h2>Галерея (изображения без размеров)</h2>
+      <div class="gallery">
+        <!-- SVG data URI разных размеров; атрибуты width/height намеренно не заданы -->
+        <img alt="demo 800x300" src="data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='800' height='300'>
+            <rect width='100%25' height='100%25' fill='%23ddd'/>
+            <text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32'>800×300</text>
+          </svg>">
+
+        <img alt="demo 300x800" src="data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='300' height='800'>
+            <rect width='100%25' height='100%25' fill='%23eee'/>
+            <text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32'>300×800</text>
+          </svg>">
+
+        <img alt="demo 640x360" src="data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' width='640' height='360'>
+            <rect width='100%25' height='100%25' fill='%23ccc'/>
+            <text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='28'>640×360</text>
+          </svg>">
+      </div>
+
+      <!-- КАРТОЧКИ: одна имеет min-width больше контейнера → тянет горизонтальный скролл -->
+      <h2>Карточки (min-width &gt; контейнера)</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Обычная карточка</h3>
+          <p>Вписывается в контейнер.</p>
+        </article>
+        <article class="card card--wide">
+          <h3>Слишком широкая карточка</h3>
+          <p>Имеет <code>min-width</code>, превышающий ширину контейнера — создаёт горизонтальную прокрутку.</p>
+        </article>
+        <article class="card">
+          <h3>Обычная карточка</h3>
+          <p>Тоже ок.</p>
+        </article>
+      </div>
+
+      <!-- НЕРАЗБИВАЕМЫЙ ТЕКСТ → переполнение строки и горизонтальный скролл -->
+      <h2>Длинная неразбиваемая строка</h2>
+      <p class="nowrap">
+        __SUPER_LONG_TOKEN__:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      </p>
+
+      <!-- БЛОК С ОТРИЦАТЕЛЬНЫМИ ОТСТУПАМИ → часть текста уезжает за край -->
+      <h2>Блок с отрицательными отступами</h2>
+      <blockquote class="pull-quote">
+        «Этот блок слегка выезжает влево за пределы контейнера из-за <code>margin-left: -24px</code>.»
+      </blockquote>
+    </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>© 2025 Debug Layout Lab</small>
+    </div>
+  </footer>
   <script type="module" src="../src/index.js"></script>
   <script src="./demo.js"></script>
 </body>
