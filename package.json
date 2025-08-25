@@ -5,6 +5,7 @@
     "description": "Universal frontend debug panel (shadow DOM, HUD, tools).",
     "type": "module",
     "scripts": {
+        "css": "node tools/minify-css.js",
         "build": "node tools/build.js",
         "size": "node tools/size-check.js",
         "test": "node tests/run-tests.js"
