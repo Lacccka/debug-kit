@@ -46,8 +46,10 @@ LayoutDebugTool.init({ shadowRoot: document, bus });
 const hud = document.querySelector(".dk-hud");
 const bodyEl = hud.children[1];
 const view = bodyEl.firstChild;
+const clsLabel = view.firstChild;
 const buttons = view.querySelectorAll("button");
 const btnOverflow = buttons[1];
+const btnReset = buttons[0];
 
 const realSetTimeout = global.setTimeout;
 global.setTimeout = () => {};
@@ -68,6 +70,15 @@ assert.deepEqual(
     "scanOverflow should return offending elements"
 );
 global.setTimeout = realSetTimeout;
+
+// verify reset clears CLS label
+clsLabel.textContent = "CLS: 0.1000";
+btnReset.onclick();
+assert.equal(
+    clsLabel.textContent,
+    "CLS: 0.0000",
+    "reset should clear CLS value"
+);
 
 LayoutDebugTool.destroy();
 console.log("layout-debug.spec.js passed");

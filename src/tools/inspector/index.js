@@ -30,13 +30,13 @@ export const InspectorTool = {
                 return;
             }
             if (highlighted) {
-                highlighted.classList.remove("dk-outline-error");
+                highlighted.classList.remove("dk-outline-info");
                 highlighted.style.outline = prevOutline;
             }
             highlighted = el;
             prevOutline = el.style.outline;
             const rect = el.getBoundingClientRect();
-            el.classList.add("dk-outline-error");
+            el.classList.add("dk-outline-info");
             info.textContent = `${el.tagName.toLowerCase()} ${Math.round(
                 rect.width
             )}×${Math.round(rect.height)}`;
@@ -47,7 +47,7 @@ export const InspectorTool = {
         cleanup = () => {
             document.removeEventListener("mousemove", onMove);
             if (highlighted) {
-                highlighted.classList.remove("dk-outline-error");
+                highlighted.classList.remove("dk-outline-info");
                 highlighted.style.outline = prevOutline;
             }
             hud.destroy();

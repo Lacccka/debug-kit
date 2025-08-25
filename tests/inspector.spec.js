@@ -28,7 +28,7 @@ InspectorTool.init({ shadowRoot: document, bus });
 target.dispatchEvent(new window.MouseEvent("mousemove", { bubbles: true }));
 
 assert.equal(
-    target.classList.contains("dk-outline-error"),
+    target.classList.contains("dk-outline-info"),
     true,
     "element should be highlighted"
 );
@@ -39,4 +39,9 @@ const info = body.firstChild;
 assert.equal(info.textContent, "div 100×50", "HUD should display element info");
 
 InspectorTool.destroy();
+assert.equal(
+    target.classList.contains("dk-outline-info"),
+    false,
+    "highlight should be removed on destroy"
+);
 console.log("inspector.spec.js passed");
