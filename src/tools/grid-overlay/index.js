@@ -49,27 +49,31 @@ export const GridOverlayTool = {
         const view = document.createElement("div");
 
         const addInput = (labelText, value, min, key) => {
+            const field = document.createElement("div");
+            field.className = "dk-field";
             const label = document.createElement("label");
-            label.textContent = labelText + ": ";
+            label.textContent = labelText;
             const input = document.createElement("input");
             input.type = "number";
             input.min = String(min);
             input.value = String(value);
-            input.classList.add("dk-input-sm");
+
             input.oninput = () => {
                 const v = parseInt(input.value, 10);
                 state[key] = isNaN(v) ? state[key] : v;
                 apply();
             };
-            label.appendChild(input);
-            view.appendChild(label);
-            view.appendChild(document.createElement("br"));
+            field.appendChild(label);
+            field.appendChild(input);
+            view.appendChild(field);
         };
 
         addInput("Columns", state.columns, 1, "columns");
         addInput("Gutter", state.gutter, 0, "gutter");
         addInput("Baseline", state.baseline, 1, "baseline");
 
+        const cbColsField = document.createElement("div");
+        cbColsField.className = "dk-field";
         const cbCols = document.createElement("label");
         const chkCols = document.createElement("input");
         chkCols.type = "checkbox";
@@ -80,9 +84,11 @@ export const GridOverlayTool = {
         };
         cbCols.appendChild(chkCols);
         cbCols.appendChild(document.createTextNode(" Columns"));
-        view.appendChild(cbCols);
-        view.appendChild(document.createElement("br"));
+        cbColsField.appendChild(cbCols);
+        view.appendChild(cbColsField);
 
+        const cbBaseField = document.createElement("div");
+        cbBaseField.className = "dk-field";
         const cbBase = document.createElement("label");
         const chkBase = document.createElement("input");
         chkBase.type = "checkbox";
@@ -92,8 +98,8 @@ export const GridOverlayTool = {
             apply();
         };
         cbBase.appendChild(chkBase);
-        cbBase.appendChild(document.createTextNode(" Baseline"));
-        view.appendChild(cbBase);
+        cbBaseField.appendChild(cbBase);
+        view.appendChild(cbBaseField);
 
         hud.setContent(view);
         apply();

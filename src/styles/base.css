@@ -92,6 +92,42 @@ body {
     width: 64px;
 }
 
+* Form field */ .dk-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--dk-space-sm);
+    margin-bottom: var(--dk-space-md);
+}
+.btn {
+    cursor: pointer;
+    background: var(--dk-bg-3);
+    color: var(--dk-fg);
+    border: var(--dk-border-width) solid var(--dk-border);
+    border-radius: var(--dk-radius);
+    padding: var(--dk-space-md) var(--dk-space-lg);
+    line-height: 20px;
+    transition: background 0.15s, border-color 0.15s;
+}
+.btn:hover {
+    background: var(--dk-bg);
+    border-color: var(--dk-accent-border);
+}
+.btn:active {
+    transform: scale(0.98);
+}
+.btn:focus-visible {
+    outline: none;
+    border-color: var(--dk-accent-border);
+    box-shadow: 0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
+}
+.dk-field label {
+    font-size: 0.875rem;
+}
+.dk-field input,
+.dk-field select {
+    width: 100%;
+}
+
 /* Highlight outlines */
 .dk-outline-error {
     outline: 2px solid var(--dk-outline-error) !important;

@@ -8,8 +8,9 @@
 
 .dk-hud {
     position: fixed;
-    width: 260px;
-    max-width: 340px;
+    width: 300px;
+    max-width: 320px;
+    min-width: 280px;
     background: var(--dk-surface);
     border: var(--dk-border-width) solid var(--dk-border);
     border-radius: var(--dk-radius);
@@ -33,7 +34,7 @@
     display: flex;
     align-items: center;
     gap: var(--dk-space-md);
-    padding: var(--dk-space-md) 10px;
+    padding: var(--dk-space-lg);
     background: color-mix(in oklab, var(--dk-surface) 85%, #000 15%);
     border-bottom: var(--dk-border-width) solid var(--dk-border);
     border-radius: var(--dk-radius) var(--dk-radius) 0 0;
@@ -43,7 +44,7 @@
 }
 
 .dk-hud .bd {
-    padding: 8px 10px;
+    padding: var(--dk-space-lg);
 }
 
 .dk-hud .hdr .ttl {
@@ -55,6 +56,12 @@
     margin-left: auto;
     display: flex;
     gap: 6px;
+}
+
+.dk-btn-row {
+    display: flex;
+    gap: var(--dk-space-md);
+    margin-top: var(--dk-space-md);
 }
 
 .dk-hud .btn {

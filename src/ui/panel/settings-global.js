@@ -65,8 +65,8 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     box.appendChild(lockRow);
 
     const lhUrlRow = document.createElement("div");
-    lhUrlRow.className = "dk-card__row";
-    const lhUrlLabel = document.createElement("span");
+    lhUrlRow.className = "dk-field";
+    const lhUrlLabel = document.createElement("label");
     lhUrlLabel.textContent = "Lighthouse URL";
     const lhUrlInput = document.createElement("input");
     lhUrlInput.type = "text";
@@ -79,8 +79,8 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     box.appendChild(lhUrlRow);
 
     const lhStrRow = document.createElement("div");
-    lhStrRow.className = "dk-card__row";
-    const lhStrLabel = document.createElement("span");
+    lhStrRow.className = "dk-field";
+    const lhStrLabel = document.createElement("label");
     lhStrLabel.textContent = "Lighthouse strategy";
     const lhStrSelect = document.createElement("select");
     ["mobile", "desktop"].forEach((v) => {
@@ -102,6 +102,7 @@ export function renderGlobalSettings({ storage, ns, bus }) {
 
     const btnExport = document.createElement("button");
     btnExport.textContent = "Export";
+    btnExport.classList.add("btn");
     btnExport.onclick = () => {
         const data = exportSettings(ns);
         const blob = new Blob([data], { type: "application/json" });
@@ -115,6 +116,7 @@ export function renderGlobalSettings({ storage, ns, bus }) {
 
     const btnImport = document.createElement("button");
     btnImport.textContent = "Import";
+    btnImport.classList.add("btn");
     btnImport.onclick = () => {
         const input = document.createElement("input");
         input.type = "file";
@@ -140,6 +142,7 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     resetRow.className = "dk-card__row";
     const btnReset = document.createElement("button");
     btnReset.textContent = "Reset";
+    btnReset.classList.add("btn");
     btnReset.onclick = () => {
         Object.keys(localStorage).forEach((k) => {
             if (k.startsWith(ns)) localStorage.removeItem(k);

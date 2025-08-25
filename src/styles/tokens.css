@@ -4,14 +4,16 @@
     --dk-z: 2147483000;
 
     /* spacing & radii */
-    --dk-radius: 12px;
+    --dk-radius: 10px;
     --dk-gap: 10px;
     --dk-toggle-size: 2.5rem;
     --dk-space-sm: 4px;
     --dk-space-md: 8px;
+    --dk-space-lg: 12px;
+    --dk-space-xl: 16px;
 
     /* typography */
-    --dk-font-base: 13px/1.45 system-ui, -apple-system, "Segoe UI", Roboto,
+    --dk-font-base: 14px/20px system-ui, -apple-system, "Segoe UI", Roboto,
         Arial, Helvetica, sans-serif;
 
     /* borders */
@@ -23,8 +25,8 @@
     --dk-bg-3: #15171c;
     --dk-surface: #14161a;
     --dk-border: #23252b;
-    --dk-fg: #e6e7ea;
-    --dk-fg-muted: #b8bbc4;
+    --dk-fg: #cfcfcf;
+    --dk-fg-muted: #9aa0a6;
     --dk-accent: #8ab4ff;
     --dk-accent-strong: #4d8eff;
     --dk-accent-emphasis: color-mix(

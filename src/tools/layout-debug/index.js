@@ -29,11 +29,13 @@ export const LayoutDebugTool = {
         btnOverflow.textContent = "Scan overflow";
         btnOverflow.classList.add("btn");
 
+        const btnRow = document.createElement("div");
+        btnRow.className = "dk-btn-row";
+        btnRow.appendChild(btnReset);
+        btnRow.appendChild(btnOverflow);
+
         view.appendChild(clsLabel);
-        view.appendChild(document.createElement("br"));
-        view.appendChild(btnReset);
-        view.appendChild(document.createTextNode(" "));
-        view.appendChild(btnOverflow);
+        view.appendChild(btnRow);
         hud.setContent(view);
 
         const clsObs = createClsObserver(({ entry, value }) => {
