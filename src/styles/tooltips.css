@@ -1,54 +1,189 @@
-/* tooltips.css — simple adaptive tooltip */
+/* tooltips.css — adaptive, token-driven tooltip
+   relies on tokens.css (semantic aliases & z-layers)
+   API:
+     .dk-tip[data-open="true"]
+     .dk-tip[data-placement="top|bottom|left|right" [-start|-end]]
+*/
 .dk-tip {
-    position: fixed;
-    max-width: 320px;
-    background: var(--dk-surface);
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
+    /* ── Internals (you may tweak per theme/component) ─────────────── */
+    --_arrow: 8px; /* arrow square size */
+    --_offset: var(--dk-space-2); /* gap between trigger and tooltip */
+    --_shift: var(--dk-space-3); /* lateral shift for start/end */
+    --_pad-y: var(--dk-padding-y);
+    --_pad-x: var(--dk-padding-x);
+
+    position: fixed; /* avoids clipping in overflow/transform contexts */
+    inset: auto auto auto auto;
+    max-width: clamp(220px, 22vw, 340px);
+    pointer-events: none; /* tooltip shouldn't intercept the mouse */
+    z-index: var(--dk-z-tooltip);
+
+    /* colors via semantic aliases from tokens.css */
+    background: var(--dk-color-surface);
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
     border-radius: var(--dk-radius);
-    padding: var(--dk-space-md) var(--dk-gap);
-    box-shadow: var(--dk-shadow);
-    font-size: 12px;
-    line-height: 1.35;
-    z-index: calc(var(--dk-z) + 1);
-    transform: translateY(var(--dk-space-sm));
+    box-shadow: var(--dk-elevation-2);
+
+    padding: var(--_pad-y) var(--_pad-x);
+    font-size: var(--dk-text-sm);
+    line-height: 1.4;
+
+    /* subtle float-in; origin changes per placement */
+    transform: translateY(4px) scale(0.98);
+    transform-origin: var(--_origin, center top);
     opacity: 0;
-    transition: opacity 0.12s ease, transform 0.12s ease;
-}
-.dk-tip[data-open="true"] {
-    opacity: 1;
-    transform: none;
+    transition: opacity var(--dk-dur-fast) var(--dk-ease-out),
+        transform var(--dk-dur-fast) var(--dk-ease-out);
 }
 
-/* Arrow */
+.dk-tip[data-open="true"] {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* ── Arrow (rotated square, border-consistent) ───────────────────── */
 .dk-tip::after {
     content: "";
     position: absolute;
-    width: var(--dk-space-md);
-    height: var(--dk-space-md);
-    background: inherit;
-    border-left: var(--dk-border-width) solid var(--dk-border);
-    border-top: var(--dk-border-width) solid var(--dk-border);
+    width: var(--_arrow);
+    height: var(--_arrow);
+    background: inherit; /* match surface, including theme */
+    border-left: var(--dk-border-width) var(--dk-border-style)
+        var(--dk-color-border);
+    border-top: var(--dk-border-width) var(--dk-border-style)
+        var(--dk-color-border);
     transform: rotate(45deg);
+    /* ensures arrow sits above the border radius */
+    z-index: -1; /* placed behind content edge but above background */
 }
 
-/* Placement modifiers */
-.dk-tip[data-placement="top"]::after {
-    bottom: calc(var(--dk-space-sm) * -1);
-    left: var(--dk-radius);
+/* ── Placements ──────────────────────────────────────────────────── */
+/* TOP */
+.dk-tip[data-placement^="top"] {
+    --_origin: center bottom;
+    transform: translateY(-4px) scale(0.98);
 }
-.dk-tip[data-placement="bottom"]::after {
-    top: calc(var(--dk-space-sm) * -1);
-    left: var(--dk-radius);
+.dk-tip[data-placement^="top"]::after {
+    bottom: calc(var(--_arrow) * -0.5 + 1px);
+}
+
+/* BOTTOM */
+.dk-tip[data-placement^="bottom"] {
+    --_origin: center top;
+    transform: translateY(4px) scale(0.98);
+}
+.dk-tip[data-placement^="bottom"]::after {
+    top: calc(var(--_arrow) * -0.5 + 1px);
     transform: rotate(225deg);
 }
-.dk-tip[data-placement="left"]::after {
-    right: calc(var(--dk-space-sm) * -1);
-    top: var(--dk-gap);
+
+/* LEFT */
+.dk-tip[data-placement^="left"] {
+    --_origin: right center;
+    transform: translateX(-4px) scale(0.98);
+}
+.dk-tip[data-placement^="left"]::after {
+    right: calc(var(--_arrow) * -0.5 + 1px);
     transform: rotate(135deg);
 }
-.dk-tip[data-placement="right"]::after {
-    left: calc(var(--dk-space-sm) * -1);
-    top: var(--dk-gap);
+
+/* RIGHT */
+.dk-tip[data-placement^="right"] {
+    --_origin: left center;
+    transform: translateX(4px) scale(0.98);
+}
+.dk-tip[data-placement^="right"]::after {
+    left: calc(var(--_arrow) * -0.5 + 1px);
     transform: rotate(-45deg);
 }
+
+/* ── Alignment modifiers (start/center/end) ──────────────────────── */
+/* TOP/BOTTOM: move arrow & content along inline axis */
+.dk-tip[data-placement="top"],
+.dk-tip[data-placement="bottom"] {
+    inset-inline-start: auto;
+    inset-inline-end: auto;
+}
+.dk-tip[data-placement="top"]::after,
+.dk-tip[data-placement="bottom"]::after {
+    inset-inline-start: var(--dk-radius);
+}
+
+.dk-tip[data-placement="top-start"]::after,
+.dk-tip[data-placement="bottom-start"]::after {
+    inset-inline-start: var(--_shift);
+}
+
+.dk-tip[data-placement="top-end"]::after,
+.dk-tip[data-placement="bottom-end"]::after {
+    inset-inline-end: var(--_shift);
+    inset-inline-start: auto;
+}
+
+/* LEFT/RIGHT: move arrow & content along block axis */
+.dk-tip[data-placement="left"]::after,
+.dk-tip[data-placement="right"]::after {
+    inset-block-start: var(--_shift);
+}
+
+.dk-tip[data-placement="left-start"]::after,
+.dk-tip[data-placement="right-start"]::after {
+    inset-block-start: var(--dk-space-2);
+}
+
+.dk-tip[data-placement="left-end"]::after,
+.dk-tip[data-placement="right-end"]::after {
+    inset-block-end: var(--dk-space-2);
+    inset-block-start: auto;
+}
+
+/* ── Visual offset (gap between trigger and bubble) — set by JS ──── */
+/* NOTE: сам пузырь позиционируется скриптом.
+   Здесь задаём только внутреннее смещение для входной анимации и стрелки. */
+.dk-tip[data-placement^="top"] {
+    margin-block-end: var(--_offset);
+}
+.dk-tip[data-placement^="bottom"] {
+    margin-block-start: var(--_offset);
+}
+.dk-tip[data-placement^="left"] {
+    margin-inline-end: var(--_offset);
+}
+.dk-tip[data-placement^="right"] {
+    margin-inline-start: var(--_offset);
+}
+
+/* ── Motion & Accessibility ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .dk-tip {
+        transition: none;
+        transform: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .dk-tip {
+        background: Canvas;
+        color: CanvasText;
+        border-color: CanvasText;
+        box-shadow: none;
+    }
+    .dk-tip::after {
+        background: Canvas;
+        border-color: CanvasText;
+    }
+}
+
+/* ── Small viewport niceties ─────────────────────────────────────── */
+@media (max-width: 480px) {
+    .dk-tip {
+        max-width: min(92vw, 360px);
+    }
+}
+
+/* ── High-contrast / dark-tuning (optional)
+   Если в тёмной теме стрелка кажется темнее, можно подсветить её тенью: */
+/*
+.dk-tip::after { box-shadow: 0 0 0 1px color-mix(in oklab, var(--dk-color-border) 60%, transparent); }
+*/

@@ -1,30 +1,185 @@
-/* overlays.css — overlays & backdrop */
+/* overlays.css — overlays & backdrop (improved) */
+
+/* 
+  БАЗОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ОВЕРЛЕЯ (можно переопределять локально на .dk-overlay)
+  — завязаны на токены из tokens.css
+*/
+.dk-overlay {
+    /* кастомизация по месту использования */
+    --_overlay-z: var(--dk-z-overlay);
+    --_backdrop-color: color-mix(in oklab, var(--dk-color-bg) 20%, black 80%);
+    --_backdrop-opacity: 0.45;
+    --_backdrop-blur: 2px;
+
+    --_enter-dur: var(--dk-dur, 180ms);
+    --_exit-dur: var(--dk-dur, 180ms);
+    --_ease-out: var(--dk-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+
+    /* размеры панели по умолчанию */
+    --_panel-w: 560px;
+    --_panel-max-w: calc(100dvw - var(--dk-space-8) * 2);
+    --_panel-max-h: calc(100dvh - var(--dk-space-8) * 2);
+}
+
+/* 
+  КОНТЕЙНЕР ОВЕРЛЕЯ
+  — pointer-events: none; чтобы клики ловили только дети (backdrop / panel)
+*/
 .dk-overlay {
     position: fixed;
     inset: 0;
+    z-index: var(--_overlay-z);
     pointer-events: none;
 }
 
-.dk-grid-overlay {
-    z-index: 1;
+/* Модификаторы уровня слоя (при необходимости) */
+.dk-overlay[data-kind="modal"] {
+    --_overlay-z: var(--dk-z-modal);
+}
+.dk-overlay[data-kind="toast"] {
+    --_overlay-z: var(--dk-z-toast);
+}
+.dk-overlay[data-kind="tooltip"] {
+    --_overlay-z: var(--dk-z-tooltip);
 }
 
+/* Сетка/диагностика поверх UI */
+.dk-grid-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--dk-z-1);
+    pointer-events: none;
+}
+
+/* 
+  BACKDROP (подложка): отдельный элемент внутри .dk-overlay
+  .dk-overlay > .dk-backdrop
+*/
 .dk-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(2px);
-    pointer-events: auto;
+    background: color-mix(
+        in oklab,
+        var(--_backdrop-color) var(--_backdrop-opacity),
+        transparent
+    );
+    backdrop-filter: blur(var(--_backdrop-blur));
+    -webkit-backdrop-filter: blur(var(--_backdrop-blur));
     opacity: 0;
-    transition: opacity 0.18s ease-out;
     visibility: hidden;
+    transition: opacity var(--_enter-dur) var(--_ease-out),
+        visibility 0s linear var(--_enter-dur);
+    pointer-events: auto; /* клики по заднику допускаются по умолчанию */
 }
+
+/* «Клики насквозь» для кейсов, где нужен чисто визуальный слой */
+.dk-overlay--passthrough .dk-backdrop {
+    pointer-events: none;
+}
+
+/* 
+  ПАНЕЛЬ ОВЕРЛЕЯ: опциональный контейнер контента
+  .dk-overlay > .dk-overlay__panel
+*/
+.dk-overlay__panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: min(var(--_panel-w), var(--_panel-max-w));
+    max-height: var(--_panel-max-h);
+    transform: translate(-50%, -46%) scale(0.98);
+    opacity: 0;
+    visibility: hidden;
+    background: var(--dk-color-surface);
+    color: var(--dk-color-text);
+    border: 1px solid var(--dk-color-border);
+    border-radius: var(--dk-radius);
+    box-shadow: var(--dk-elevation-3);
+    overflow: auto;
+    pointer-events: auto; /* панель интерактивна */
+    transition: opacity var(--_enter-dur) var(--_ease-out),
+        transform var(--_enter-dur) var(--_ease-out),
+        visibility 0s linear var(--_enter-dur);
+}
+
+/* 
+  СОСТОЯНИЯ ОТКРЫТО/ЗАКРЫТО 
+  — используем data-state="open|closed" на .dk-overlay
+*/
+.dk-overlay[data-state="open"] .dk-backdrop {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity var(--_enter-dur) var(--_ease-out), visibility 0s;
+}
+
+.dk-overlay[data-state="open"] .dk-overlay__panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    transition: opacity var(--_enter-dur) var(--_ease-out),
+        transform var(--_enter-dur) var(--_ease-out), visibility 0s;
+}
+
+/* Вариант «sheet» (снизу) — можно навесить как модификатор на панель */
+.dk-overlay__panel[data-motion="sheet-bottom"] {
+    top: auto;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 8px);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    max-height: min(80dvh, var(--_panel-max-h));
+}
+
+.dk-overlay[data-state="open"] .dk-overlay__panel[data-motion="sheet-bottom"] {
+    transform: translate(-50%, 0);
+}
+
+/* 
+  ПОДДЕРЖКА REDUCED MOTION 
+*/
+@media (prefers-reduced-motion: reduce) {
+    .dk-backdrop,
+    .dk-overlay__panel {
+        transition: none;
+    }
+    .dk-overlay__panel {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 
+  FORCED COLORS / HIGH CONTRAST 
+  — убираем blur/тени, полагаемся на системные цвета
+*/
+@media (forced-colors: active) {
+    .dk-backdrop {
+        background: CanvasText;
+        opacity: 0.6;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+    .dk-overlay__panel {
+        background: Canvas;
+        color: CanvasText;
+        border: 1px solid CanvasText;
+        box-shadow: none;
+    }
+}
+
+/* 
+  SCROLL-LOCK ХЕЛПЕР ДЛЯ <body> (добавляйте/снимайте класс скриптом)
+*/
+.has-overlay {
+    overflow: hidden;
+    overscroll-behavior: contain;
+}
+
+/* 
+  СОВМЕСТИМОСТЬ С ТЕКУЩИМИ КЛАССАМИ:
+  — если вы уже используете .open на .dk-backdrop, оставим шим.
+*/
 .dk-backdrop.open {
     opacity: 1;
     visibility: visible;
-}
-
-/* Allow clicks through overlay when necessary */
-.dk-overlay--passthrough {
-    pointer-events: none;
 }
