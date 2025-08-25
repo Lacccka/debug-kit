@@ -1,180 +1,388 @@
-/* panel.css — toggle, panel, cards, inputs, grid */
+/* panel.css — toggle, panel, cards, inputs, grid (improved)
+   Зависит от tokens.css: переменные --dk-*
+*/
+
+/* ========== ROOT / LAYERING ===================================== */
 .dk-root {
     position: fixed;
-    inset: auto 1rem 1rem auto;
+    inset: auto var(--dk-space-4) var(--dk-space-4) auto;
     pointer-events: none;
-    z-index: var(--dk-z);
+    z-index: var(--dk-z-3); /* поверх контента, ниже модалок */
 }
-/* Toggle */
+
+/* ========== TOGGLE ============================================== */
 .dk-toggle {
     width: var(--dk-toggle-size);
     height: var(--dk-toggle-size);
-    border-radius: 999px;
-    background: var(--dk-bg);
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
-    box-shadow: var(--dk-shadow);
+    border-radius: var(--dk-radius-pill);
+    background: var(--dk-color-surface);
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
+    box-shadow: var(--dk-elevation-2);
     display: grid;
     place-items: center;
     cursor: pointer;
-    transition: background 0.2s, transform 0.08s ease-out, color 0.2s;
+    transition: background var(--dk-dur) var(--dk-ease-out),
+        transform var(--dk-dur-fast) var(--dk-ease-out),
+        color var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out);
     pointer-events: auto;
     -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 .dk-toggle:hover {
-    background: var(--dk-accent);
-    color: var(--dk-on-accent);
+    background: var(--dk-color-accent);
+    color: var(--dk-color-on-accent);
+    box-shadow: var(--dk-elevation-3);
 }
 .dk-toggle:active {
     transform: translateY(1px) scale(0.98);
 }
 .dk-toggle:focus-visible {
-    outline: 0.125rem solid var(--dk-accent-emphasis);
-    outline-offset: 0.125rem;
-    box-shadow: 0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
+    outline: none;
+    box-shadow: var(--dk-focus-ring), var(--dk-elevation-3);
     border-color: transparent;
 }
 
-/* Panel */
-.dk-panel {
+/* ========== SCRIM (BACKDROP) ==================================== */
+.dk-scrim {
     position: fixed;
-    bottom: 4.5rem;
-    right: 1rem;
-    width: 22.5rem;
-    max-height: 72vh;
-    background: linear-gradient(180deg, var(--dk-bg-2), var(--dk-bg-2));
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
-    border-radius: var(--dk-radius);
-    box-shadow: var(--dk-shadow);
-    overflow: auto;
-    pointer-events: auto;
-    backdrop-filter: saturate(115%) blur(0.5rem);
-    -webkit-backdrop-filter: saturate(115%) blur(0.5rem);
+    inset: 0;
+    background: color-mix(in oklab, var(--dk-color-bg) 40%, transparent);
+    backdrop-filter: blur(2px) saturate(115%);
+    -webkit-backdrop-filter: blur(2px) saturate(115%);
     opacity: 0;
-    transform: translateY(0.5rem) scale(0.985);
-    transition: opacity 0.18s, transform 0.18s;
     visibility: hidden;
-    border-radius: var(--dk-radius);
+    transition: opacity var(--dk-dur) var(--dk-ease-out),
+        visibility var(--dk-dur) step-end;
+    z-index: var(--dk-z-2);
+    pointer-events: none;
 }
-@supports not (backdrop-filter: blur(0.5rem)) {
-    .dk-panel {
-        background: var(--dk-surface);
+.dk-scrim.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+@supports not (backdrop-filter: blur(2px)) {
+    .dk-scrim {
+        background: color-mix(in oklab, var(--dk-color-bg) 55%, transparent);
     }
 }
-.dk-panel.open {
+
+/* ========== PANEL =============================================== */
+.dk-panel {
+    position: fixed;
+    bottom: calc(var(--dk-toggle-size) + var(--dk-space-6));
+    right: var(--dk-space-4);
+    width: 22.5rem; /* 360px */
+    max-height: 72vh;
+    background: linear-gradient(
+        180deg,
+        var(--dk-color-bg-2),
+        var(--dk-color-bg-2)
+    );
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
+    border-radius: var(--dk-radius);
+    box-shadow: var(--dk-elevation-3);
+    overflow: auto;
+    pointer-events: auto;
+    backdrop-filter: saturate(115%) blur(8px);
+    -webkit-backdrop-filter: saturate(115%) blur(8px);
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+    transition: opacity var(--dk-dur) var(--dk-ease-out),
+        transform var(--dk-dur) var(--dk-ease-out), visibility 0s var(--dk-dur);
+    visibility: hidden;
+    z-index: var(--dk-z-3);
+}
+@supports not (backdrop-filter: blur(8px)) {
+    .dk-panel {
+        background: var(--dk-color-surface);
+    }
+}
+.dk-panel.is-open {
     opacity: 1;
     transform: none;
     visibility: visible;
+    transition: opacity var(--dk-dur) var(--dk-ease-out),
+        transform var(--dk-dur) var(--dk-ease-out), visibility 0s 0s;
 }
 
+/* Sticky header */
 .dk-panel__header {
     position: sticky;
     top: 0;
     display: flex;
     align-items: center;
-    gap: var(--dk-space-md);
-    padding: var(--dk-space-lg);
-    background: var(--dk-bg-2);
-    border-bottom: var(--dk-border-width) solid var(--dk-border);
+    gap: var(--dk-gap);
+    padding: var(--dk-space-4);
+    background: var(--dk-color-bg-2);
+    border-bottom: var(--dk-border-width) var(--dk-border-style)
+        var(--dk-color-border);
     backdrop-filter: inherit;
     -webkit-backdrop-filter: inherit;
+    z-index: 1;
 }
 .dk-panel__header .ttl {
     font-weight: 700;
     letter-spacing: 0.2px;
+    font-size: var(--dk-text-lg);
 }
 .dk-panel__header .srch {
     margin-left: auto;
     width: 60%;
-    background: var(--dk-bg-3);
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
+    background: var(--dk-color-bg-3);
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
     border-radius: var(--dk-radius);
-    padding: var(--dk-space-md) var(--dk-space-lg);
+    padding: var(--dk-space-2) var(--dk-space-3);
     outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out),
+        background var(--dk-dur) var(--dk-ease-out);
+    min-height: var(--dk-control-h);
 }
 .dk-panel__header .srch::placeholder {
-    color: var(--dk-fg-muted);
+    color: var(--dk-color-text-muted);
 }
 .dk-panel__header .srch:focus {
-    border-color: var(--dk-accent-border);
-    box-shadow: 0 0 0 0.1875rem var(--dk-accent-subtle);
+    border-color: var(--dk-color-border-accent);
+    box-shadow: 0 0 0 calc(var(--dk-focus-ring-width) + 2px)
+        var(--dk-color-accent-faint);
+    background: var(--dk-color-surface);
 }
 
-/* Layout */
+/* ========== BODY / LAYOUT ======================================= */
 .dk-panel__body {
-    padding: var(--dk-space-lg);
+    padding: var(--dk-space-4);
     display: grid;
-    gap: var(--dk-space-lg);
+    gap: var(--dk-space-4);
 }
 .dk-grid {
+    --cols: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     gap: var(--dk-gap);
 }
-@media (max-width: 26.25rem) {
+@media (max-width: 420px) {
     .dk-panel {
         width: min(92vw, 22.5rem);
-        right: var(--dk-space-sm);
-        left: var(--dk-space-sm);
+        right: var(--dk-space-2);
+        left: var(--dk-space-2);
+        bottom: calc(var(--dk-toggle-size) + var(--dk-space-4));
     }
     .dk-panel__header .srch {
         width: 100%;
     }
     .dk-grid {
-        grid-template-columns: 1fr;
+        --cols: 1;
+    }
+}
+/* Автоподбор колонок, если нужно на широких экранах */
+@media (min-width: 920px) {
+    .dk-grid--auto {
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     }
 }
 
-/* Card */
+/* ========== CARD ================================================= */
 .dk-card {
-    background: var(--dk-bg-3);
-    border: var(--dk-border-width) solid var(--dk-border);
+    background: var(--dk-color-bg-3);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
     border-radius: var(--dk-radius);
-    padding: var(--dk-space-lg);
-    transition: border-color 0.15s, box-shadow 0.15s;
+    padding: var(--dk-space-4);
+    transition: border-color var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out),
+        background var(--dk-dur) var(--dk-ease-out);
+}
+.dk-card:hover {
+    background: color-mix(
+        in oklab,
+        var(--dk-color-bg-3) 92%,
+        var(--dk-color-accent-subtle)
+    );
 }
 .dk-card:focus-within {
-    border-color: var(--dk-accent-border);
-    box-shadow: 0 0 0 0.1875rem var(--dk-accent-faint);
+    border-color: var(--dk-color-border-accent);
+    box-shadow: 0 0 0 calc(var(--dk-focus-ring-width) + 2px)
+        var(--dk-color-accent-faint);
 }
 .dk-card__row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--dk-space-md);
+    gap: var(--dk-gap);
 }
 .dk-card__head {
     display: flex;
     align-items: center;
-    gap: var(--dk-space-md);
+    gap: var(--dk-gap);
     font-weight: 600;
+    font-size: var(--dk-text-md);
 }
 
-/* Inputs */
-.dk-card select,
-.dk-panel select,
+/* ========== INPUTS / FORMS ====================================== */
+/* База для text-like и select */
 .dk-panel input[type="text"],
 .dk-panel input[type="search"],
-.dk-hud select,
+.dk-panel input[type="number"],
+.dk-panel input[type="email"],
+.dk-panel input[type="password"],
+.dk-panel select,
+.dk-card input[type="text"],
+.dk-card input[type="number"],
+.dk-card select,
 .dk-hud input[type="text"],
-.dk-hud input[type="number"] {
-    background: var(--dk-bg-3);
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
+.dk-hud input[type="number"],
+.dk-hud select,
+.dk-panel textarea,
+.dk-card textarea {
+    background: var(--dk-color-bg-3);
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
     border-radius: var(--dk-radius);
-    padding: var(--dk-space-md) var(--dk-space-lg);
-    min-height: 2.25rem;
-    line-height: 20px;
+    padding: var(--dk-space-2) var(--dk-space-3);
+    min-height: var(--dk-control-h);
+    line-height: 1.35;
+    width: 100%;
+    transition: background var(--dk-dur) var(--dk-ease-out),
+        border-color var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out);
 }
-.dk-card select:focus,
+.dk-panel textarea,
+.dk-card textarea {
+    min-height: calc(var(--dk-control-h) * 1.6);
+    resize: vertical;
+}
+.dk-panel select,
+.dk-card select {
+    padding-right: var(--dk-space-5);
+}
+
+/* Hover / Focus */
+.dk-panel input:hover,
+.dk-panel select:hover,
+.dk-panel textarea:hover,
+.dk-card input:hover,
+.dk-card select:hover,
+.dk-card textarea:hover,
+.dk-hud input:hover,
+.dk-hud select:hover {
+    border-color: color-mix(
+        in oklab,
+        var(--dk-color-border) 70%,
+        var(--dk-color-accent) 30%
+    );
+}
+.dk-panel input:focus,
 .dk-panel select:focus,
-.dk-hud select:focus,
-.dk-hud input[type="text"]:focus,
-.dk-hud input[type="number"]:focus {
+.dk-panel textarea:focus,
+.dk-card input:focus,
+.dk-card select:focus,
+.dk-card textarea:focus,
+.dk-hud input:focus,
+.dk-hud select:focus {
     outline: none;
-    border-color: var(--dk-accent-border);
-    box-shadow: 0 0 0 0.1875rem var(--dk-accent-faint);
+    border-color: var(--dk-color-border-accent);
+    box-shadow: 0 0 0 calc(var(--dk-focus-ring-width) + 2px)
+        var(--dk-color-accent-faint);
+    background: var(--dk-color-surface);
+}
+
+/* Disabled / Readonly / Placeholder */
+.dk-panel input[disabled],
+.dk-panel select[disabled],
+.dk-panel textarea[disabled],
+.dk-card input[disabled],
+.dk-card select[disabled],
+.dk-card textarea[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.dk-panel input[readonly],
+.dk-card input[readonly] {
+    background: color-mix(in oklab, var(--dk-color-bg-3) 85%, transparent);
+}
+.dk-panel ::placeholder,
+.dk-card ::placeholder {
+    color: var(--dk-color-text-muted);
+}
+
+/* Validation (HTML5 и ARIA) */
+.dk-panel input:invalid,
+.dk-panel select:invalid,
+.dk-panel textarea:invalid,
+.dk-card input:invalid,
+.dk-card select:invalid,
+.dk-card textarea:invalid,
+.dk-panel [aria-invalid="true"],
+.dk-card [aria-invalid="true"] {
+    border-color: var(--dk-color-danger);
+    box-shadow: 0 0 0 calc(var(--dk-focus-ring-width) + 2px)
+        color-mix(in oklab, var(--dk-color-danger) 25%, transparent);
+}
+.dk-field__msg {
+    font-size: var(--dk-text-sm);
+    color: var(--dk-color-text-muted);
+    margin-top: var(--dk-space-2);
+}
+.dk-field__msg--error {
+    color: var(--dk-color-danger);
+}
+.dk-field__msg--ok {
+    color: var(--dk-color-success);
+}
+
+/* Inline controls row */
+.dk-controls {
+    display: flex;
+    gap: var(--dk-gap);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ========== DENSITY HOOKS ======================================= */
+.dk-panel[density="compact"],
+.dk-card[density="compact"] {
+    --dk-gap: var(--dk-space-2);
+    --dk-control-h: var(--dk-size-2);
+    --dk-radius: var(--dk-radius-md);
+}
+.dk-panel[density="comfortable"],
+.dk-card[density="comfortable"] {
+    --dk-gap: var(--dk-space-4);
+    --dk-control-h: calc(var(--dk-size-4) + 0.25rem);
+    --dk-radius: var(--dk-radius-lg);
+}
+
+/* ========== REDUCED MOTION ====================================== */
+@media (prefers-reduced-motion: reduce) {
+    .dk-toggle,
+    .dk-panel,
+    .dk-scrim,
+    .dk-card,
+    .dk-panel__header .srch {
+        transition: none !important;
+    }
+}
+
+/* ========== HIGH CONTRAST (forced colors) ======================== */
+@media (forced-colors: active) {
+    .dk-toggle,
+    .dk-panel,
+    .dk-card,
+    .dk-panel__header,
+    .dk-panel input,
+    .dk-panel select,
+    .dk-panel textarea {
+        box-shadow: none;
+        background: Canvas;
+        color: CanvasText;
+        border-color: GrayText;
+    }
+    .dk-scrim {
+        background: Canvas;
+        opacity: 0.6;
+    }
 }
