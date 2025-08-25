@@ -20,6 +20,7 @@ export const LoggerTool = {
         const hudFactory = createHudFactory({
             shadowRoot: ctx.shadowRoot,
             bus: ctx.bus,
+            ns: ctx.ns,
         });
         const hud = hudFactory("logger", "Logger", {
             icon: LoggerTool.icon,

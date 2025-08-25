@@ -14,6 +14,7 @@ export const PerfHudTool = {
         const hudFactory = createHudFactory({
             shadowRoot: ctx.shadowRoot,
             bus: ctx.bus,
+            ns: ctx.ns,
         });
         const hud = hudFactory("perf", "Performance", {
             icon: PerfHudTool.icon,

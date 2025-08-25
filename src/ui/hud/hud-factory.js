@@ -1,10 +1,10 @@
 // src/ui/hud/hud-factory.js
 import { storage } from "../../core/storage.js";
 
-const POS_KEY = "debugkit:v1:positions";
-const STATE_KEY = "debugkit:v1:hudstate";
-
-export function createHudFactory({ shadowRoot, bus }) {
+export function createHudFactory({ shadowRoot, bus, ns }) {
+    const POS_KEY = ns + "positions";
+    const STATE_KEY = ns + "hudstate";
+    const THEME_KEY = ns + "theme";
     const hudLayer = shadowRoot.querySelector(".dk-hud-layer");
 
     function clamp(val, min, max) {
@@ -172,9 +172,9 @@ export function createHudFactory({ shadowRoot, bus }) {
         btnMin.onclick = () => setMinimized(!minimized);
         btnPin.onclick = togglePin;
         btnSet.onclick = () => {
-            const curTheme = storage.getItem("debugkit:v1:theme", "light");
+            const curTheme = storage.getItem(THEME_KEY, "light");
             const next = curTheme === "light" ? "dark" : "light";
-            storage.setItem("debugkit:v1:theme", next);
+            storage.setItem(THEME_KEY, next);
             bus && bus.emit && bus.emit("theme:set", next);
         };
 

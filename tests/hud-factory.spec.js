@@ -23,7 +23,8 @@ const bus = {
     },
 };
 
-const hudFactory = createHudFactory({ shadowRoot: document, bus });
+const NS = "debugkit:v1:";
+const hudFactory = createHudFactory({ shadowRoot: document, bus, ns: NS });
 
 // --- position saving and restoring ---
 const hud = hudFactory("pos", "Position");
@@ -62,7 +63,7 @@ window.dispatchEvent(new window.MouseEvent("mouseup", { bubbles: true }));
 
 const expectedLeft = innerWidth - 100 - 8;
 const expectedTop = hud.el.style.top;
-const pos = JSON.parse(localStorage.getItem("debugkit:v1:positions"));
+const pos = JSON.parse(localStorage.getItem(NS + "positions"));
 assert.deepEqual(
     pos.pos,
     { left: `${expectedLeft}px`, top: expectedTop },
@@ -89,7 +90,7 @@ const btnMin = hudState.el.querySelector(".btn-min");
 const btnPin = hudState.el.querySelector(".btn-pin");
 
 btnMin.click();
-let state = JSON.parse(localStorage.getItem("debugkit:v1:hudstate"));
+let state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.ok(
     hudState.el.classList.contains("is-pill"),
     "should add is-pill on minimize"
@@ -101,7 +102,7 @@ assert.deepEqual(
 );
 
 btnMin.click();
-state = JSON.parse(localStorage.getItem("debugkit:v1:hudstate"));
+state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.equal(
     hudState.el.classList.contains("is-pill"),
     false,
@@ -114,7 +115,7 @@ assert.deepEqual(
 );
 
 btnPin.click();
-state = JSON.parse(localStorage.getItem("debugkit:v1:hudstate"));
+state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.ok(
     hudState.el.classList.contains("is-pin"),
     "should add is-pin when pinned"
@@ -126,7 +127,7 @@ assert.deepEqual(
 );
 
 btnPin.click();
-state = JSON.parse(localStorage.getItem("debugkit:v1:hudstate"));
+state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.equal(
     hudState.el.classList.contains("is-pin"),
     false,

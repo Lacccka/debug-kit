@@ -13,6 +13,7 @@ export const LayoutDebugTool = {
         const hudFactory = createHudFactory({
             shadowRoot: ctx.shadowRoot,
             bus: ctx.bus,
+            ns: ctx.ns,
         });
         const hud = hudFactory("layout-debug", "Layout", {
             width: 260,

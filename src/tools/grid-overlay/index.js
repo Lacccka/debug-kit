@@ -44,6 +44,7 @@ export const GridOverlayTool = {
         const hudFactory = createHudFactory({
             shadowRoot: ctx.shadowRoot,
             bus: ctx.bus,
+            ns: ctx.ns,
         });
         const hud = hudFactory("grid", "Grid Overlay", {
             icon: GridOverlayTool.icon,

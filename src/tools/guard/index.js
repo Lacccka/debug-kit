@@ -12,6 +12,7 @@ export const GuardTool = {
         const hudFactory = createHudFactory({
             shadowRoot: ctx.shadowRoot,
             bus: ctx.bus,
+            ns: ctx.ns,
         });
         const hud = hudFactory("guard", "Guard", {
             width: 280,

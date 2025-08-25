@@ -53,6 +53,7 @@ export function createRegistry({ bus, storage, ns }) {
         return {
             bus,
             shadowRoot: document.querySelector("#debugkit-host")?.shadowRoot,
+            ns,
             storage: {
                 get: (k, d) => read()[k] ?? d,
                 set: (k, v) => {
