@@ -30,6 +30,8 @@ export const LighthouseTool = {
         );
         const strategy = storage.getItem(ctx.ns + "lhStrategy", "mobile");
 
+        // Expects a `/lighthouse` endpoint on the same origin
+        // that returns Lighthouse results in JSON format.
         const apiUrl = new URL("/lighthouse", window.location.origin);
         apiUrl.searchParams.set("url", targetUrl);
         apiUrl.searchParams.set("strategy", strategy);
