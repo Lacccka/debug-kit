@@ -1,7 +1,40 @@
+
+/* tokens.css — design tokens & themes */
 :host {
-    --dk-bg: #101114;
-    --dk-fg: #e6e7ea;
-    --dk-accent: #5aa6ff;
-    --dk-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
-    --dk-radius: 10px;
+  /* z layers */
+  --dk-z: 2147483000;
+
+  /* spacing & radii */
+  --dk-radius: 12px;
+  --dk-gap: 10px;
+
+  /* Dark (default) */
+  --dk-bg: #101114;
+  --dk-bg-2: #111318cc;
+  --dk-bg-3: #15171c;
+  --dk-surface: #14161a;
+  --dk-border: #23252b;
+  --dk-fg: #e6e7ea;
+  --dk-fg-muted: #b8bbc4;
+  --dk-accent: #5aa6ff;
+  --dk-accent-strong: #2f7dff;
+  --dk-shadow: 0 8px 28px rgba(0,0,0,.28);
 }
+
+/* Light theme opt-in via attribute or context */
+:host([theme="light"]),
+:host(:not([theme="dark"])):host-context([data-theme="light"]) {
+  --dk-bg:#ffffff;
+  --dk-bg-2:#ffffffcc;
+  --dk-bg-3:#f5f6f8;
+  --dk-surface:#ffffff;
+  --dk-border:#e3e5ea;
+  --dk-fg:#0b0c0f;
+  --dk-fg-muted:#4b4f59;
+  --dk-accent:#2f7dff;
+  --dk-accent-strong:#1a5fff;
+  --dk-shadow:0 8px 28px rgba(16,24,40,.18);
+}
+
+/* Compact density opt-in */
+:host([density="compact"]) { --dk-gap: 8px; --dk-radius: 10px; }

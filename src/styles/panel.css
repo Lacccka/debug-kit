@@ -1,29 +1,94 @@
+
+/* panel.css — toggle, panel, cards, inputs, grid */
+.dk-root { position:fixed; inset:auto 16px 16px auto; pointer-events:none; z-index:var(--dk-z); }
+
+/* Toggle */
 .dk-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 999px;
-    background: var(--dk-bg);
-    color: var(--dk-fg);
-    box-shadow: var(--dk-shadow);
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    transition: background 0.2s;
+  width:42px; height:42px; border-radius:999px;
+  background:var(--dk-bg); color:var(--dk-fg);
+  border:1px solid var(--dk-border);
+  box-shadow:var(--dk-shadow);
+  display:grid; place-items:center; cursor:pointer;
+  transition:background .2s, transform .08s ease-out, color .2s;
+  pointer-events:auto; -webkit-tap-highlight-color: transparent;
+}
+.dk-toggle:hover { background:var(--dk-accent); color:#fff; }
+.dk-toggle:active { transform: translateY(1px) scale(.98); }
+.dk-toggle:focus-visible {
+  outline:2px solid color-mix(in oklab, var(--dk-accent) 70%, transparent);
+  outline-offset:2px;
+  box-shadow:0 0 0 4px color-mix(in oklab, var(--dk-accent) 25%, transparent);
+  border-color:transparent;
 }
 
-.dk-toggle:hover {
-    background: var(--dk-accent);
-    color: #fff;
-}
-
+/* Panel */
 .dk-panel {
-    backdrop-filter: saturate(120%) blur(8px);
+  position:fixed; bottom:72px; right:16px;
+  width:360px; max-height:72vh;
+  background:linear-gradient(180deg, var(--dk-bg-2), var(--dk-bg-2));
+  color:var(--dk-fg); border:1px solid var(--dk-border);
+  border-radius:14px; box-shadow:var(--dk-shadow);
+  overflow:auto; pointer-events:auto;
+  backdrop-filter:saturate(115%) blur(8px);
+  -webkit-backdrop-filter:saturate(115%) blur(8px);
+  opacity:0; transform:translateY(8px) scale(.985);
+  transition:opacity .18s, transform .18s;
+  visibility:hidden;
+}
+@supports not (backdrop-filter: blur(8px)) { .dk-panel { background:var(--dk-surface); } }
+.dk-panel.open { opacity:1; transform:none; visibility:visible; }
+
+.dk-panel__header {
+  position:sticky; top:0; display:flex; align-items:center; gap:8px;
+  padding:10px; background:var(--dk-bg-2);
+  border-bottom:1px solid var(--dk-border);
+  backdrop-filter:inherit; -webkit-backdrop-filter:inherit;
+}
+.dk-panel__header .ttl { font-weight:700; letter-spacing:.2px; }
+.dk-panel__header .srch {
+  margin-left:auto; width:60%; min-width:160px;
+  background:var(--dk-bg-3); color:var(--dk-fg);
+  border:1px solid var(--dk-border); border-radius:10px; padding:8px 10px;
+  outline:none; transition:border-color .15s, box-shadow .15s;
+}
+.dk-panel__header .srch::placeholder { color:var(--dk-fg-muted); }
+.dk-panel__header .srch:focus {
+  border-color: color-mix(in oklab, var(--dk-accent) 65%, var(--dk-border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dk-accent) 25%, transparent);
 }
 
-.dk-card select {
-    background: #15171c;
-    color: var(--dk-fg);
-    border: 1px solid #2a2d35;
-    border-radius: 8px;
-    padding: 6px 8px;
+/* Layout */
+.dk-panel__body { padding:12px; display:grid; gap:12px; }
+.dk-grid { display:grid; grid-template-columns: 1fr 1fr; gap: var(--dk-gap); }
+@media (max-width: 420px) {
+  .dk-panel { width:min(92vw, 360px); right:4px; left:4px; }
+  .dk-grid { grid-template-columns: 1fr; }
+}
+
+/* Card */
+.dk-card {
+  background:var(--dk-bg-3); border:1px solid var(--dk-border);
+  border-radius:var(--dk-radius); padding:10px;
+  transition:border-color .15s, box-shadow .15s;
+}
+.dk-card:focus-within {
+  border-color: color-mix(in oklab, var(--dk-accent) 65%, var(--dk-border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dk-accent) 22%, transparent);
+}
+.dk-card__row { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.dk-card__head { display:flex; align-items:center; gap:8px; font-weight:600; }
+
+/* Inputs */
+.dk-card select,
+.dk-panel select,
+.dk-panel input[type="text"],
+.dk-panel input[type="search"] {
+  background:var(--dk-bg-3); color:var(--dk-fg);
+  border:1px solid var(--dk-border); border-radius:10px; padding:8px 10px;
+  min-height:36px; line-height:1.2;
+}
+.dk-card select:focus, .dk-panel select:focus {
+  outline:none;
+  border-color: color-mix(in oklab, var(--dk-accent) 65%, var(--dk-border));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dk-accent) 22%, transparent);
 }
