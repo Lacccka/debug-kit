@@ -56,4 +56,13 @@ assert.equal(
     "should use overflow highlight class"
 );
 
+Object.defineProperty(document.body, "scrollWidth", { get: () => 150 });
+Object.defineProperty(document.body, "clientWidth", { get: () => 50 });
+const bodyOffenders = scanOverflow(document, () => {});
+assert.deepEqual(
+    bodyOffenders,
+    [document.body, overflow],
+    "should include body when body overflows"
+);
+
 console.log("hud-utils.spec.js passed");
