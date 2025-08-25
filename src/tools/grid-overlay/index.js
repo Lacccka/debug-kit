@@ -18,12 +18,7 @@ export const GridOverlayTool = {
         };
 
         const overlay = document.createElement("div");
-        Object.assign(overlay.style, {
-            position: "fixed",
-            inset: "0",
-            pointerEvents: "none",
-            zIndex: "1",
-        });
+        overlay.classList.add("dk-overlay", "dk-grid-overlay");
         ctx.shadowRoot.appendChild(overlay);
 
         const apply = () => {
@@ -60,7 +55,7 @@ export const GridOverlayTool = {
             input.type = "number";
             input.min = String(min);
             input.value = String(value);
-            input.style.width = "64px";
+            input.classList.add("dk-input-sm");
             input.oninput = () => {
                 const v = parseInt(input.value, 10);
                 state[key] = isNaN(v) ? state[key] : v;

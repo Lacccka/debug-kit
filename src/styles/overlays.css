@@ -5,6 +5,10 @@
     pointer-events: none;
 }
 
+.dk-grid-overlay {
+    z-index: 1;
+}
+
 .dk-backdrop {
     position: fixed;
     inset: 0;

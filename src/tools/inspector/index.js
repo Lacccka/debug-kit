@@ -22,7 +22,6 @@ export const InspectorTool = {
         hud.setContent(info);
 
         let highlighted = null;
-        let prevOutline = "";
 
         const onMove = (e) => {
             const el = e.target;
@@ -30,12 +29,12 @@ export const InspectorTool = {
                 return;
             }
             if (highlighted) {
-                highlighted.style.outline = prevOutline;
+                highlighted.classList.remove("dk-outline-error");
             }
             highlighted = el;
             prevOutline = el.style.outline;
             const rect = el.getBoundingClientRect();
-            el.style.outline = "2px solid rgba(255,80,80,0.85)";
+            el.classList.add("dk-outline-error");
             info.textContent = `${el.tagName.toLowerCase()} ${Math.round(
                 rect.width
             )}×${Math.round(rect.height)}`;
@@ -46,7 +45,7 @@ export const InspectorTool = {
         cleanup = () => {
             document.removeEventListener("mousemove", onMove);
             if (highlighted) {
-                highlighted.style.outline = prevOutline;
+                highlighted.classList.remove("dk-outline-error");
             }
             hud.destroy();
         };

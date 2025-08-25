@@ -24,10 +24,10 @@ export const LayoutDebugTool = {
         const clsLabel = document.createElement("div");
         const btnReset = document.createElement("button");
         btnReset.textContent = "Reset CLS";
-        btnReset.style.cursor = "pointer";
+        btnReset.classList.add("btn");
         const btnOverflow = document.createElement("button");
         btnOverflow.textContent = "Scan overflow";
-        btnOverflow.style.cursor = "pointer";
+        btnOverflow.classList.add("btn");
 
         view.appendChild(clsLabel);
         view.appendChild(document.createElement("br"));
@@ -41,7 +41,7 @@ export const LayoutDebugTool = {
             entry.sources?.forEach((s) => {
                 const node = s.node;
                 if (node && node.style) {
-                    highlightElement(node, "2px solid rgba(50,150,255,0.9)");
+                    highlightElement(node, "dk-outline-info");
                 }
             });
         });

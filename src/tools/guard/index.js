@@ -23,7 +23,7 @@ export const GuardTool = {
         const label = document.createElement("div");
         const btnScan = document.createElement("button");
         btnScan.textContent = "Overflow scan";
-        btnScan.style.cursor = "pointer";
+        btnScan.classList.add("btn");
 
         view.appendChild(label);
         view.appendChild(document.createElement("br"));

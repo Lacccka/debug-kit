@@ -56,13 +56,13 @@ const realSetTimeout = global.setTimeout;
 global.setTimeout = () => {};
 const offenders = btnScan.onclick();
 assert.equal(
-    overflow.style.outline,
-    "2px dashed rgba(255,80,80,.85)",
+    overflow.classList.contains("dk-outline-error-dashed"),
+    true,
     "overflow element should be highlighted"
 );
 assert.equal(
-    normal.style.outline,
-    "",
+    normal.classList.contains("dk-outline-error-dashed"),
+    false,
     "non-overflow element should remain unstyled"
 );
 assert.deepEqual(

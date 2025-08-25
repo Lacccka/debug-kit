@@ -1,8 +1,7 @@
-export const highlightElement = (el, style, duration = 1500) => {
-    const prev = el.style.outline;
-    el.style.outline = style;
+export const highlightElement = (el, cls, duration = 1500) => {
+    el.classList.add(cls);
     setTimeout(() => {
-        el.style.outline = prev;
+        el.classList.remove(cls);
     }, duration);
 };
 
@@ -15,7 +14,7 @@ export const scanOverflow = (root = document, highlight = highlightElement) => {
         const ch = el.clientHeight;
         if (sw > cw + 1 || sh > ch + 1) {
             offenders.push(el);
-            highlight(el, "2px dashed rgba(255,80,80,.85)");
+            highlight(el, "dk-outline-error-dashed");
         }
     });
     return offenders;

@@ -28,8 +28,8 @@ InspectorTool.init({ shadowRoot: document, bus });
 target.dispatchEvent(new window.MouseEvent("mousemove", { bubbles: true }));
 
 assert.equal(
-    target.style.outline,
-    "2px solid rgba(255,80,80,0.85)",
+    target.classList.contains("dk-outline-error"),
+    true,
     "element should be highlighted"
 );
 

@@ -14,15 +14,19 @@ global.setTimeout = (cb, ms) => {
     timeoutCb = cb;
     return 0;
 };
-highlightElement(el, "1px solid red", 100);
+highlightElement(el, "test", 100);
 assert.equal(
-    el.style.outline,
-    "1px solid red",
+    el.classList.contains("test"),
+    true,
     "element should be highlighted"
 );
 assert.equal(typeof timeoutCb, "function", "callback should be scheduled");
 timeoutCb();
-assert.equal(el.style.outline, "", "style should reset after timeout");
+assert.equal(
+    el.classList.contains("test"),
+    false,
+    "class should be removed after timeout"
+);
 global.setTimeout = realSetTimeout;
 
 // test scanOverflow
@@ -41,15 +45,15 @@ Object.defineProperty(overflow, "scrollHeight", { get: () => 20 });
 Object.defineProperty(overflow, "clientHeight", { get: () => 20 });
 
 const highlighted = [];
-const offenders = scanOverflow(document, (el, style) => {
-    highlighted.push({ el, style });
+const offenders = scanOverflow(document, (el, cls) => {
+    highlighted.push({ el, cls });
 });
 assert.deepEqual(offenders, [overflow], "should return overflow elements");
 assert.equal(highlighted.length, 1, "should highlight offenders");
 assert.equal(
-    highlighted[0].style,
-    "2px dashed rgba(255,80,80,.85)",
-    "should use overflow highlight style"
+    highlighted[0].cls,
+    "dk-outline-error-dashed",
+    "should use overflow highlight class"
 );
 
 console.log("hud-utils.spec.js passed");

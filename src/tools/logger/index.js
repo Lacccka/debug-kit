@@ -29,7 +29,7 @@ export const LoggerTool = {
 
         const view = document.createElement("div");
         const controls = document.createElement("div");
-        controls.style.marginBottom = "8px";
+        controls.classList.add("dk-mb-md");
 
         const btnPause = document.createElement("button");
         const updatePause = () => {
@@ -45,7 +45,7 @@ export const LoggerTool = {
 
         const addCheck = (labelText, key) => {
             const label = document.createElement("label");
-            label.style.marginLeft = "8px";
+            label.classList.add("dk-ml-md");
             const chk = document.createElement("input");
             chk.type = "checkbox";
             chk.checked = state[key];
@@ -67,8 +67,7 @@ export const LoggerTool = {
         view.appendChild(controls);
 
         const list = document.createElement("div");
-        list.style.maxHeight = "200px";
-        list.style.overflow = "auto";
+        list.classList.add("dk-scroll-list");
         view.appendChild(list);
 
         const render = () => {

@@ -71,3 +71,36 @@ body {
     background: var(--dk-border, #23252b);
     margin: var(--dk-space-sm) 0;
 }
+
+/* Spacing utilities */
+.dk-mb-md {
+    margin-bottom: var(--dk-space-md);
+}
+
+.dk-ml-md {
+    margin-left: var(--dk-space-md);
+}
+
+/* Scroll container */
+.dk-scroll-list {
+    max-height: 200px;
+    overflow: auto;
+}
+
+/* Input widths */
+.dk-input-sm {
+    width: 64px;
+}
+
+/* Highlight outlines */
+.dk-outline-error {
+    outline: 2px solid var(--dk-outline-error) !important;
+}
+
+.dk-outline-error-dashed {
+    outline: 2px dashed var(--dk-outline-error) !important;
+}
+
+.dk-outline-info {
+    outline: 2px solid var(--dk-outline-info) !important;
+}

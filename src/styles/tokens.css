@@ -39,6 +39,8 @@
         var(--dk-accent) 65%,
         var(--dk-border)
     );
+    --dk-outline-error: rgba(255, 80, 80, 0.85);
+    --dk-outline-info: rgba(50, 150, 255, 0.9);
     --dk-on-accent: var(--dk-bg);
     --dk-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
 }
