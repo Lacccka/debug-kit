@@ -24,19 +24,15 @@ export const LighthouseTool = {
         view.appendChild(pre);
         hud.setContent(view);
 
-        const apiKey = storage.getItem(ctx.ns + "lhApiKey", "");
         const targetUrl = storage.getItem(
             ctx.ns + "lhUrl",
             "https://example.com"
         );
         const strategy = storage.getItem(ctx.ns + "lhStrategy", "mobile");
 
-        const apiUrl = new URL(
-            "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
-        );
+        const apiUrl = new URL("/lighthouse", window.location.origin);
         apiUrl.searchParams.set("url", targetUrl);
         apiUrl.searchParams.set("strategy", strategy);
-        if (apiKey) apiUrl.searchParams.set("key", apiKey);
 
         fetch(apiUrl.toString())
             .then((r) => r.json())

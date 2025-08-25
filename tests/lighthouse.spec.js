@@ -15,7 +15,6 @@ global.innerHeight = window.innerHeight = 600;
 
 const NS = "debugkit:v1:";
 
-localStorage.setItem(NS + "lhApiKey", "test-key");
 localStorage.setItem(NS + "lhUrl", "https://example.com");
 localStorage.setItem(NS + "lhStrategy", "desktop");
 
@@ -46,16 +45,14 @@ LighthouseTool.init(ctx);
 await new Promise((r) => setTimeout(r, 0));
 
 assert.ok(
-    fetchedUrl.startsWith(
-        "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?"
-    ),
-    "should call Lighthouse API"
+    fetchedUrl.startsWith("http://localhost/lighthouse?"),
+    "should call local Lighthouse endpoint"
 );
 assert.ok(
     fetchedUrl.includes("strategy=desktop"),
     "should include strategy parameter"
 );
-assert.ok(fetchedUrl.includes("key=test-key"), "should include API key");
+assert.ok(!fetchedUrl.includes("key="), "should not include API key");
 
 const text = document.querySelector(".dk-hud pre").textContent;
 assert.equal(text, "Performance: 91", "should render performance score");

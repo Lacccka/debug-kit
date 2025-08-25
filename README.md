@@ -174,7 +174,7 @@ DebugKit.enableTool("guard");
 -   Экспорт/импорт настроек (JSON).
 -   Плагины (подключаемые из CDN).
 -   Inspector (подсветка DOM под курсором).
--   Интеграция с Lighthouse API.
+-   Интеграция с локальным Lighthouse.
 
 ---
 

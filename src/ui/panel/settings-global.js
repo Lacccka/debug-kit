@@ -64,20 +64,6 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     lockRow.appendChild(lockCtrl);
     box.appendChild(lockRow);
 
-    const lhKeyRow = document.createElement("div");
-    lhKeyRow.className = "dk-card__row";
-    const lhKeyLabel = document.createElement("span");
-    lhKeyLabel.textContent = "Lighthouse API key";
-    const lhKeyInput = document.createElement("input");
-    lhKeyInput.type = "text";
-    lhKeyInput.value = storage.getItem(ns + "lhApiKey", "");
-    lhKeyInput.oninput = () => {
-        storage.setItem(ns + "lhApiKey", lhKeyInput.value);
-    };
-    lhKeyRow.appendChild(lhKeyLabel);
-    lhKeyRow.appendChild(lhKeyInput);
-    box.appendChild(lhKeyRow);
-
     const lhUrlRow = document.createElement("div");
     lhUrlRow.className = "dk-card__row";
     const lhUrlLabel = document.createElement("span");
