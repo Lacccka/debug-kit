@@ -9,7 +9,10 @@ const run = async (dir) => {
         const full = path.join(dir, entry.name);
         if (entry.isDirectory()) {
             await run(full);
-        } else if (entry.name.endsWith(".spec.js")) {
+        } else if (
+            entry.name.endsWith(".spec.js") &&
+            entry.name !== "smoke.spec.js"
+        ) {
             console.log(`Running ${path.relative(root, full)}`);
             await import(url.pathToFileURL(full));
         }

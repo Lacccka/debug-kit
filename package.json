@@ -10,10 +10,12 @@
         "css": "node tools/minify-css.js",
         "build": "node tools/build.js",
         "size": "node tools/size-check.js",
-        "test": "node tests/run-tests.js"
+        "test": "node tests/run-tests.js",
+        "test:e2e": "playwright test tests/smoke.spec.js"
     },
     "devDependencies": {
         "esbuild": "^0.25.9",
-        "jsdom": "^22.1.0"
+        "jsdom": "^22.1.0",
+        "@playwright/test": "^1.45.0"
     }
 }
