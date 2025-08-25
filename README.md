@@ -158,6 +158,8 @@ node server.js
 -   **Logger**
     -   Ошибки (`onerror`, `unhandledrejection`).
     -   Сеть (fetch/xhr).
+-   **Text Tool**
+    -   Изменение текста и адаптивный размер (min/max). (Edit text with responsive font size.)
 
 ---
 
