@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 import { createBus } from "../src/core/bus.js";
-import { GuardTool } from "../src/tools/guard/index.js";
+import { LayoutDebugTool } from "../src/tools/layout-debug/index.js";
 
-// setup jsdom environment
 const dom = new JSDOM("<!DOCTYPE html><html><body></body></html>", {
     url: "http://localhost",
     pretendToBeVisual: true,
@@ -13,10 +12,12 @@ global.window = window;
 global.document = window.document;
 global.localStorage = window.localStorage;
 
-// initial viewport values
-global.innerWidth = window.innerWidth = 100;
-global.innerHeight = window.innerHeight = 200;
-global.visualViewport = { scale: 1 };
+// stub PerformanceObserver used by layout debug
+global.PerformanceObserver = class {
+    constructor() {}
+    observe() {}
+    disconnect() {}
+};
 
 // hud layer required by hud factory
 const hudLayer = document.createElement("div");
@@ -39,22 +40,18 @@ Object.defineProperty(overflow, "clientWidth", { get: () => 50 });
 Object.defineProperty(overflow, "scrollHeight", { get: () => 20 });
 Object.defineProperty(overflow, "clientHeight", { get: () => 20 });
 
-// bus for events
 const bus = createBus();
-
-// initialize tool
-GuardTool.init({ shadowRoot: document, bus });
+LayoutDebugTool.init({ shadowRoot: document, bus });
 
 const hud = document.querySelector(".dk-hud");
 const bodyEl = hud.children[1];
 const view = bodyEl.firstChild;
-const label = view.firstChild;
-const btnScan = view.querySelector("button");
+const buttons = view.querySelectorAll("button");
+const btnOverflow = buttons[1];
 
-// verify scanOverflow highlights offending elements and returns offenders
 const realSetTimeout = global.setTimeout;
 global.setTimeout = () => {};
-const offenders = btnScan.onclick();
+const offenders = btnOverflow.onclick();
 assert.equal(
     overflow.style.outline,
     "2px dashed rgba(255,80,80,.85)",
@@ -72,21 +69,5 @@ assert.deepEqual(
 );
 global.setTimeout = realSetTimeout;
 
-// verify HUD updates on viewport:change
-assert.equal(
-    label.textContent,
-    "scale: 1.00 | viewport: 100×200",
-    "initial label text"
-);
-innerWidth = window.innerWidth = 300;
-innerHeight = window.innerHeight = 400;
-visualViewport.scale = 1.5;
-bus.emit("viewport:change");
-assert.equal(
-    label.textContent,
-    "scale: 1.50 | viewport: 300×400",
-    "label should update on viewport change"
-);
-
-GuardTool.destroy();
-console.log("guard.spec.js passed");
+LayoutDebugTool.destroy();
+console.log("layout-debug.spec.js passed");

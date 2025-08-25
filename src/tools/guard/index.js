@@ -1,5 +1,6 @@
 // src/tools/guard/index.js
 import { createHudFactory } from "../../ui/hud/hud-factory.js";
+import { scanOverflow } from "../../ui/hud/hud-utils.js";
 
 let cleanup = null;
 
@@ -37,23 +38,6 @@ export const GuardTool = {
         const off1 = ctx.bus.on && ctx.bus.on("viewport:change", update);
         update();
 
-        function scanOverflow() {
-            const offenders = [];
-            document.querySelectorAll("body *").forEach((el) => {
-                const sw = el.scrollWidth,
-                    cw = el.clientWidth,
-                    sh = el.scrollHeight,
-                    ch = el.clientHeight;
-                if (sw > cw + 1 || sh > ch + 1) offenders.push(el);
-            });
-            offenders.forEach((el) => {
-                const prev = el.style.outline;
-                el.style.outline = "2px dashed rgba(255,80,80,.85)";
-                setTimeout(() => {
-                    el.style.outline = prev;
-                }, 1500);
-            });
-        }
         btnScan.onclick = scanOverflow;
 
         cleanup = () => {

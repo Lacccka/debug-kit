@@ -1,5 +1,6 @@
 // tools/layout-debug/index.js — CLS/подсветка shift/overflow (шаг 6).
 import { createHudFactory } from "../../ui/hud/hud-factory.js";
+import { highlightElement, scanOverflow } from "../../ui/hud/hud-utils.js";
 import { createClsObserver } from "./cls-observer.js";
 
 let cleanup = null;
@@ -34,20 +35,12 @@ export const LayoutDebugTool = {
         view.appendChild(btnOverflow);
         hud.setContent(view);
 
-        const highlight = (el, style) => {
-            const prev = el.style.outline;
-            el.style.outline = style;
-            setTimeout(() => {
-                el.style.outline = prev;
-            }, 1500);
-        };
-
         const clsObs = createClsObserver(({ entry, value }) => {
             clsLabel.textContent = `CLS: ${value.toFixed(4)}`;
             entry.sources?.forEach((s) => {
                 const node = s.node;
                 if (node && node.style) {
-                    highlight(node, "2px solid rgba(50,150,255,0.9)");
+                    highlightElement(node, "2px solid rgba(50,150,255,0.9)");
                 }
             });
         });
@@ -57,19 +50,6 @@ export const LayoutDebugTool = {
             clsLabel.textContent = "CLS: 0.0000";
         };
 
-        const scanOverflow = () => {
-            const offenders = [];
-            document.querySelectorAll("body *").forEach((el) => {
-                const sw = el.scrollWidth,
-                    cw = el.clientWidth,
-                    sh = el.scrollHeight,
-                    ch = el.clientHeight;
-                if (sw > cw + 1 || sh > ch + 1) offenders.push(el);
-            });
-            offenders.forEach((el) => {
-                highlight(el, "2px dashed rgba(255,80,80,.85)");
-            });
-        };
         btnOverflow.onclick = scanOverflow;
 
         cleanup = () => {
