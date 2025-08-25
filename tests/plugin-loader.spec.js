@@ -1,13 +1,23 @@
 import assert from "node:assert/strict";
 import http from "node:http";
+import fs from "node:fs";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { JSDOM } from "jsdom";
 import { loadPlugin } from "../src/core/plugin-loader.js";
+
+const esmPath = path.join(process.cwd(), "tests", "mock-plugin.mjs");
+fs.writeFileSync(
+    esmPath,
+    "export default {id: 'esm', name: 'ESM', icon: 'E'};"
+);
+const esmUrl = pathToFileURL(esmPath).href;
 
 const server = http.createServer((req, res) => {
     if (req.url === "/plugin.js") {
         res.setHeader("Content-Type", "application/javascript");
         res.end(
-            "window.DebugKitPlugin = {id: 'mock', name: 'Mock', icon: 'M'};"
+            "window.DebugKitPlugin = {id: 'legacy', name: 'Legacy', icon: 'L'};"
         );
     } else {
         res.statusCode = 404;
@@ -16,7 +26,7 @@ const server = http.createServer((req, res) => {
 });
 await new Promise((resolve) => server.listen(0, resolve));
 const port = server.address().port;
-const url = `http://localhost:${port}/plugin.js`;
+const scriptUrl = `http://localhost:${port}/plugin.js`;
 
 const dom = new JSDOM(
     "<!DOCTYPE html><html><head></head><body></body></html>",
@@ -32,14 +42,19 @@ global.document = window.document;
 
 let registered = null;
 global.DebugKit = {
-    registerTool(tool) {
+    registerTool: (tool) => {
         registered = tool;
     },
 };
 window.DebugKit = global.DebugKit;
 
-await loadPlugin(url);
-assert.equal(registered?.id, "mock", "plugin should register tool");
+await loadPlugin(esmUrl);
+assert.equal(registered?.id, "esm", "ESM plugin should register tool");
+
+registered = null;
+await loadPlugin(scriptUrl);
+assert.equal(registered?.id, "legacy", "script plugin should register tool");
 
 server.close();
+fs.unlinkSync(esmPath);
 console.log("plugin-loader.spec.js passed");

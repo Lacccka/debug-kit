@@ -53,6 +53,41 @@ DebugKit.enableTool("guard");
 </script>
 ```
 
+## 🧩 Плагины
+
+Плагин — это модуль, который предоставляет конфиг инструмента. Debug‑Kit
+старается загрузить его через динамический `import()` и ожидает
+`default` или именованный экспорт.
+
+```js
+// my-tool.mjs
+export default {
+    id: "my-tool",
+    name: "My Tool",
+    icon: "T",
+};
+
+// альтернативно
+export const tool = {
+    id: "my-tool",
+    name: "My Tool",
+    icon: "T",
+};
+```
+
+Подключение:
+
+```js
+await DebugKit.loadPlugin("https://cdn.example.com/my-tool.mjs");
+```
+
+If `import()` is not supported, provide a fallback script that sets
+`window.DebugKitPlugin`:
+
+```js
+window.DebugKitPlugin = { id: "my-tool", name: "My Tool", icon: "T" };
+```
+
 ## 🚨 Lighthouse endpoint
 
 Инструмент Lighthouse отправляет запрос на `/lighthouse` в текущем
