@@ -25,8 +25,8 @@
     --dk-border: #23252b;
     --dk-fg: #e6e7ea;
     --dk-fg-muted: #b8bbc4;
-    --dk-accent: #5aa6ff;
-    --dk-accent-strong: #2f7dff;
+    --dk-accent: #8ab4ff;
+    --dk-accent-strong: #4d8eff;
     --dk-accent-emphasis: color-mix(
         in oklab,
         var(--dk-accent) 70%,

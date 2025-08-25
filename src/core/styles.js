@@ -164,6 +164,22 @@ export const BASE_CSS = `
   background:color-mix(in oklab, var(--dk-surface) 85%, #000 15%);
   cursor:move; user-select:none;
 }
+.dk-hud .bd{padding:8px 10px}
+.dk-hud .hdr .ttl{font-weight:600;margin-left:4px}
+.dk-hud .hdr .btns{margin-left:auto;display:flex;gap:6px}
+.dk-hud .btn{
+  cursor:pointer;display:grid;place-items:center;width:1.5rem;height:1.5rem;
+  padding:0;line-height:1;font-size:.875rem;
+  background:var(--dk-bg-3);color:var(--dk-fg);
+  border:1px solid var(--dk-border);border-radius:var(--dk-space-sm);
+  transition:background .15s,border-color .15s;
+}
+.dk-hud .btn:hover{background:var(--dk-bg);border-color:var(--dk-accent-border)}
+.dk-hud .btn:active{transform:scale(.95)}
+.dk-hud .btn:focus-visible{
+  outline:none;border-color:var(--dk-accent-border);
+  box-shadow:0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
+}
 
 /* scrollbar (WebKit/Chromium) */
 .dk-panel::-webkit-scrollbar{width:10px;height:10px}

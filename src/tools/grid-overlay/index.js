@@ -14,7 +14,7 @@ export const GridOverlayTool = {
             gutter: ctx.storage.get("gutter", 20),
             baseline: ctx.storage.get("baseline", 8),
             showColumns: ctx.storage.get("showColumns", true),
-            showBaseline: ctx.storage.get("showBaseline", false),
+            showBaseline: ctx.storage.get("showBaseline", true),
         };
 
         const overlay = document.createElement("div");
@@ -43,7 +43,7 @@ export const GridOverlayTool = {
         });
         const hud = hudFactory("grid", "Grid Overlay", {
             icon: GridOverlayTool.icon,
-            width: 260,
+            width: 320,
         });
 
         const view = document.createElement("div");

@@ -1,6 +1,6 @@
 // tools/grid-overlay/overlays.js — CSS-gradients для оверлея.
 
-const DEFAULT_COLOR = "rgba(255,0,0,0.1)";
+const DEFAULT_COLOR = "rgba(0,128,255,0.25)";
 
 /**
  * Возвращает градиент для колонок.

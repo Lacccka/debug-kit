@@ -11,11 +11,11 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
         return Math.max(min, Math.min(val, max));
     }
 
-    return function createHud(toolId, title, { width = 280, icon = "" } = {}) {
+    return function createHud(toolId, title, { width = 320, icon = "" } = {}) {
         const hud = document.createElement("div");
         hud.className = "dk-hud";
 
-        const baseWidth = Math.max(240, Math.min(320, width));
+        const baseWidth = Math.max(260, Math.min(400, width));
         const hdr = document.createElement("div");
         hdr.className = "hdr";
         hdr.innerHTML = `<span class="ic">${icon}</span><strong class="ttl">${title}</strong>

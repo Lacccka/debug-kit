@@ -59,4 +59,31 @@
 
 .dk-hud .btn {
     cursor: pointer;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    line-height: 1;
+    font-size: 0.875rem;
+    background: var(--dk-bg-3);
+    color: var(--dk-fg);
+    border: var(--dk-border-width) solid var(--dk-border);
+    border-radius: var(--dk-space-sm);
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.dk-hud .btn:hover {
+    background: var(--dk-bg);
+    border-color: var(--dk-accent-border);
+}
+
+.dk-hud .btn:active {
+    transform: scale(0.95);
+}
+
+.dk-hud .btn:focus-visible {
+    outline: none;
+    border-color: var(--dk-accent-border);
+    box-shadow: 0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
 }
