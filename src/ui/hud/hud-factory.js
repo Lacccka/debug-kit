@@ -1,5 +1,6 @@
 // src/ui/hud/hud-factory.js
 import { storage } from "../../core/storage.js";
+import { hudButtons } from "./hud-config.js";
 
 export function createHudFactory({ shadowRoot, bus, ns }) {
     const POS_KEY = ns + "positions";
@@ -20,10 +21,10 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
         hdr.className = "hdr";
         hdr.innerHTML = `<span class="ic">${icon}</span><strong class="ttl">${title}</strong>
       <span class="btns">
-        <button class="btn btn-pin" title="Pin">📌</button>
-        <button class="btn btn-set" title="Settings">⚙️</button>
-        <button class="btn btn-min" title="Свернуть">—</button>
-        <button class="btn btn-close" title="Закрыть">×</button>
+        <button class="btn btn-pin" title="${hudButtons.pin.title}">${hudButtons.pin.icon}</button>
+        <button class="btn btn-set" title="${hudButtons.settings.title}">${hudButtons.settings.icon}</button>
+        <button class="btn btn-min" title="${hudButtons.minimize.title}">${hudButtons.minimize.icon}</button>
+        <button class="btn btn-close" title="${hudButtons.close.title}">${hudButtons.close.icon}</button>
       </span>`;
 
         const body = document.createElement("div");
