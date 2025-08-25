@@ -23,6 +23,18 @@ npm install
 
 ## 🔧 Сборка и тесты
 
+Используйте `Makefile` для централизованной сборки (Use the Makefile for a centralized build):
+
+```bash
+make        # установка зависимостей, сборка, тесты и проверка размера
+# отдельные шаги
+make build
+make test
+make size
+```
+
+Также доступны команды npm:
+
 ```bash
 npm run build
 npm test
@@ -90,9 +102,15 @@ window.DebugKitPlugin = { id: "my-tool", name: "My Tool", icon: "T" };
 
 URL плагина можно ввести в панели настроек и нажать «Load Plugin». Адрес
 сохраняется в `localStorage` и загружается автоматически при следующем
-запуске.  
+запуске.
 Plugin URL may also be entered in the settings panel; it is persisted in
 `localStorage` and reloaded on startup.
+
+## 📚 API
+
+Подробнее об `DebugKit.registerTool`, структуре инструмента и событиях шины
+см. в [docs/plugins.md](docs/plugins.md).
+_English: see docs/plugins.md for plugin API._
 
 ## 🚨 Lighthouse endpoint
 
