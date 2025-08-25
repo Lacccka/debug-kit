@@ -8,5 +8,8 @@
         "build": "node tools/build.js",
         "size": "node tools/size-check.js",
         "test": "node tests/run-tests.js"
+    },
+    "devDependencies": {
+        "jsdom": "^22.1.0"
     }
 }
