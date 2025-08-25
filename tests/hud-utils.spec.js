@@ -4,6 +4,7 @@ import { highlightElement, scanOverflow } from "../src/ui/hud/hud-utils.js";
 
 const dom = new JSDOM("<!DOCTYPE html><html><body></body></html>");
 const { document } = dom.window;
+global.document = document;
 
 // test highlightElement
 const el = document.createElement("div");
@@ -14,16 +15,20 @@ global.setTimeout = (cb, ms) => {
     timeoutCb = cb;
     return 0;
 };
-highlightElement(el, "test", 100);
+highlightElement(el, "dk-outline-info", 100);
+assert.ok(
+    document.head.querySelector("#dk-highlight-styles"),
+    "highlight styles should be attached"
+);
 assert.equal(
-    el.classList.contains("test"),
+    el.classList.contains("dk-outline-info"),
     true,
     "element should be highlighted"
 );
 assert.equal(typeof timeoutCb, "function", "callback should be scheduled");
 timeoutCb();
 assert.equal(
-    el.classList.contains("test"),
+    el.classList.contains("dk-outline-info"),
     false,
     "class should be removed after timeout"
 );
