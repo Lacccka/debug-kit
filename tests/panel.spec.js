@@ -15,6 +15,7 @@ window.matchMedia = () => ({ matches: false, addEventListener: () => {} });
 global.matchMedia = window.matchMedia;
 global.CustomEvent = window.CustomEvent;
 
+let registeredTool = null;
 const registry = {
     getAll: () => [
         { id: "alpha", name: "Alpha", icon: "A", enabled: true },
@@ -22,6 +23,9 @@ const registry = {
     ],
     enableTool: () => {},
     disableTool: () => {},
+    registerTool: (tool) => {
+        registeredTool = tool;
+    },
 };
 
 const events = [];
@@ -37,8 +41,19 @@ const bus = {
 };
 
 const ns = "spec:";
-const panel = createPanel({ bus, registry, storage, shadowRoot: document, ns });
-
+const loaderCalls = [];
+const loadPlugin = async (url) => {
+    loaderCalls.push(url);
+    return { id: "plug", name: "Plugin", icon: "P" };
+};
+const panel = createPanel({
+    bus,
+    registry,
+    storage,
+    shadowRoot: document,
+    ns,
+    loadPlugin,
+});
 // --- search functionality ---
 const grid = document.querySelector(".dk-grid");
 const input = document.querySelector(".dk-panel__header .srch");
@@ -75,6 +90,27 @@ assert.equal(
 assert.ok(
     events.some((e) => e.type === "panel:lock" && e.data === true),
     "panel:lock event emitted"
+);
+
+const pluginInput = document.querySelector("[data-test=plugin-url]");
+const pluginBtn = document.querySelector("[data-test=plugin-load]");
+pluginInput.value = "http://example.com/plugin.js";
+pluginBtn.dispatchEvent(new window.Event("click", { bubbles: true }));
+await Promise.resolve();
+assert.equal(
+    loaderCalls[0],
+    "http://example.com/plugin.js",
+    "loadPlugin called with URL"
+);
+assert.equal(
+    registeredTool?.id,
+    "plug",
+    "registry should register loaded tool"
+);
+assert.deepEqual(
+    storage.getJSON(ns + "plugins"),
+    ["http://example.com/plugin.js"],
+    "plugin URL stored in localStorage"
 );
 
 panel.close();

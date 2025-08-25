@@ -78,7 +78,7 @@ export const tool = {
 Подключение:
 
 ```js
-await DebugKit.loadPlugin("https://cdn.example.com/my-tool.mjs");
+await DebugKit.loadPlugin("https://cdn.example.com/my-tool.mjs"); // возвращает объект инструмента
 ```
 
 If `import()` is not supported, provide a fallback script that sets
@@ -87,6 +87,12 @@ If `import()` is not supported, provide a fallback script that sets
 ```js
 window.DebugKitPlugin = { id: "my-tool", name: "My Tool", icon: "T" };
 ```
+
+URL плагина можно ввести в панели настроек и нажать «Load Plugin». Адрес
+сохраняется в `localStorage` и загружается автоматически при следующем
+запуске.  
+Plugin URL may also be entered in the settings panel; it is persisted in
+`localStorage` and reloaded on startup.
 
 ## 🚨 Lighthouse endpoint
 

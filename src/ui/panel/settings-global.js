@@ -3,7 +3,13 @@ import {
     importSettings,
 } from "../../tools/settings-transfer/index.js";
 
-export function renderGlobalSettings({ storage, ns, bus }) {
+export function renderGlobalSettings({
+    storage,
+    ns,
+    bus,
+    registry,
+    loadPlugin,
+}) {
     const box = document.createElement("div");
     box.className = "dk-card";
 
@@ -57,6 +63,38 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     };
     lockField.appendChild(lockLabel);
     box.appendChild(lockField);
+
+    const pluginRow = document.createElement("div");
+    pluginRow.className = "dk-field";
+    const pluginLabel = document.createElement("label");
+    pluginLabel.textContent = "Plugin URL";
+    const pluginInput = document.createElement("input");
+    pluginInput.type = "text";
+    pluginInput.setAttribute("data-test", "plugin-url");
+    const pluginBtn = document.createElement("button");
+    pluginBtn.textContent = "Load Plugin";
+    pluginBtn.classList.add("btn");
+    pluginBtn.setAttribute("data-test", "plugin-load");
+    pluginBtn.onclick = async () => {
+        const url = pluginInput.value.trim();
+        if (!url) return;
+        try {
+            const tool = await loadPlugin(url);
+            registry.registerTool(tool);
+            const list = storage.getJSON(ns + "plugins") || [];
+            if (!list.includes(url)) {
+                list.push(url);
+                storage.setJSON(ns + "plugins", list);
+            }
+            pluginInput.value = "";
+        } catch (e) {
+            console.warn(e);
+        }
+    };
+    pluginRow.appendChild(pluginLabel);
+    pluginRow.appendChild(pluginInput);
+    pluginRow.appendChild(pluginBtn);
+    box.appendChild(pluginRow);
 
     const lhUrlRow = document.createElement("div");
     lhUrlRow.className = "dk-field";

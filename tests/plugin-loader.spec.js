@@ -40,20 +40,11 @@ const { window } = dom;
 global.window = window;
 global.document = window.document;
 
-let registered = null;
-global.DebugKit = {
-    registerTool: (tool) => {
-        registered = tool;
-    },
-};
-window.DebugKit = global.DebugKit;
+const esmTool = await loadPlugin(esmUrl);
+assert.equal(esmTool?.id, "esm", "ESM plugin should load tool");
 
-await loadPlugin(esmUrl);
-assert.equal(registered?.id, "esm", "ESM plugin should register tool");
-
-registered = null;
-await loadPlugin(scriptUrl);
-assert.equal(registered?.id, "legacy", "script plugin should register tool");
+const scriptTool = await loadPlugin(scriptUrl);
+assert.equal(scriptTool?.id, "legacy", "script plugin should load tool");
 
 server.close();
 fs.unlinkSync(esmPath);

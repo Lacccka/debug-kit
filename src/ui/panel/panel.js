@@ -1,7 +1,14 @@
 import { renderList } from "./search.js";
 import { renderGlobalSettings } from "./settings-global.js";
 
-export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
+export function createPanel({
+    bus,
+    registry,
+    storage,
+    shadowRoot,
+    ns,
+    loadPlugin,
+}) {
     const root = shadowRoot.querySelector(".dk-panel-root");
     const panel = shadowRoot.querySelector(".dk-panel");
     let locked = storage.getItem(ns + "panelLock", "0") === "1";
@@ -50,8 +57,13 @@ export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
         body.className = "dk-panel__body";
 
         const list = renderList({ registry }); // сам отрисует список
-        const globals = renderGlobalSettings({ storage, ns, bus });
-
+        const globals = renderGlobalSettings({
+            storage,
+            ns,
+            bus,
+            registry,
+            loadPlugin,
+        });
         body.appendChild(list);
         body.appendChild(globals);
 

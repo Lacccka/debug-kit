@@ -24,7 +24,20 @@ const ns = "debugkit:v1:";
 
     attachBaseStyles(shadowRoot);
 
-    const panel = createPanel({ bus, registry: reg, storage, shadowRoot, ns });
+    const loadAndRegister = async (url) => {
+        const tool = await loadPlugin(url);
+        reg.registerTool(tool);
+        return tool;
+    };
+
+    const panel = createPanel({
+        bus,
+        registry: reg,
+        storage,
+        shadowRoot,
+        ns,
+        loadPlugin: loadAndRegister,
+    });
 
     setupListeners({ bus });
     versioning.init({ storage, ns });
@@ -39,9 +52,14 @@ const ns = "debugkit:v1:";
         disableTool: reg.disableTool,
         toggleTool: reg.toggleTool,
         getState: reg.getState,
-        loadPlugin,
+        loadPlugin: loadAndRegister,
         bus,
     };
+
+    const pluginUrls = storage.getJSON(ns + "plugins") || [];
+    for (const url of pluginUrls) {
+        loadAndRegister(url).catch((e) => console.warn(e));
+    }
 
     for (const tool of defaultTools) {
         reg.registerTool(tool);
