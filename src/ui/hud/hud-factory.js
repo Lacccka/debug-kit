@@ -1,6 +1,7 @@
 // src/ui/hud/hud-factory.js
 import { storage } from "../../core/storage.js";
 import { hudButtons } from "./hud-config.js";
+import { hudStyle } from "./hud-style-config.js";
 
 export function createHudFactory({ shadowRoot, bus, ns }) {
     const POS_KEY = ns + "positions";
@@ -12,11 +13,18 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
         return Math.max(min, Math.min(val, max));
     }
 
-    return function createHud(toolId, title, { width = 320, icon = "" } = {}) {
+    return function createHud(
+        toolId,
+        title,
+        { width = hudStyle.width, icon = "" } = {}
+    ) {
         const hud = document.createElement("div");
         hud.className = "dk-hud";
 
-        const baseWidth = Math.max(280, Math.min(480, width));
+        const baseWidth = Math.max(
+            hudStyle.minWidth,
+            Math.min(hudStyle.maxWidth, width)
+        );
         const hdr = document.createElement("div");
         hdr.className = "hdr";
         hdr.innerHTML = `<span class="ic">${icon}</span><strong class="ttl">${title}</strong>

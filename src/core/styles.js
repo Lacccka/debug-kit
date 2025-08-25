@@ -1,4 +1,5 @@
 // base-styles.js
+import { hudStyle } from "../ui/hud/hud-style-config.js";
 
 export const BASE_CSS = `
 :host {
@@ -171,7 +172,7 @@ export const BASE_CSS = `
 /* hud */
 .dk-hud-layer{position:fixed;inset:0;pointer-events:none;z-index:var(--dk-z)}
   .dk-hud{
-    position:fixed;width:300px;max-width:320px;min-width:280px;
+position:fixed;width:${hudStyle.width}px;max-width:${hudStyle.maxWidth}px;min-width:${hudStyle.minWidth}px;
     background:var(--dk-surface);border:1px solid var(--dk-border);
     border-radius:var(--dk-radius);box-shadow:var(--dk-shadow);
     pointer-events:auto;overflow:hidden;
