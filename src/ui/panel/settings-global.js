@@ -64,6 +64,53 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     lockRow.appendChild(lockCtrl);
     box.appendChild(lockRow);
 
+    const lhKeyRow = document.createElement("div");
+    lhKeyRow.className = "dk-card__row";
+    const lhKeyLabel = document.createElement("span");
+    lhKeyLabel.textContent = "Lighthouse API key";
+    const lhKeyInput = document.createElement("input");
+    lhKeyInput.type = "text";
+    lhKeyInput.value = storage.getItem(ns + "lhApiKey", "");
+    lhKeyInput.oninput = () => {
+        storage.setItem(ns + "lhApiKey", lhKeyInput.value);
+    };
+    lhKeyRow.appendChild(lhKeyLabel);
+    lhKeyRow.appendChild(lhKeyInput);
+    box.appendChild(lhKeyRow);
+
+    const lhUrlRow = document.createElement("div");
+    lhUrlRow.className = "dk-card__row";
+    const lhUrlLabel = document.createElement("span");
+    lhUrlLabel.textContent = "Lighthouse URL";
+    const lhUrlInput = document.createElement("input");
+    lhUrlInput.type = "text";
+    lhUrlInput.value = storage.getItem(ns + "lhUrl", "https://example.com");
+    lhUrlInput.oninput = () => {
+        storage.setItem(ns + "lhUrl", lhUrlInput.value);
+    };
+    lhUrlRow.appendChild(lhUrlLabel);
+    lhUrlRow.appendChild(lhUrlInput);
+    box.appendChild(lhUrlRow);
+
+    const lhStrRow = document.createElement("div");
+    lhStrRow.className = "dk-card__row";
+    const lhStrLabel = document.createElement("span");
+    lhStrLabel.textContent = "Lighthouse strategy";
+    const lhStrSelect = document.createElement("select");
+    ["mobile", "desktop"].forEach((v) => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        lhStrSelect.appendChild(opt);
+    });
+    lhStrSelect.value = storage.getItem(ns + "lhStrategy", "mobile");
+    lhStrSelect.onchange = () => {
+        storage.setItem(ns + "lhStrategy", lhStrSelect.value);
+    };
+    lhStrRow.appendChild(lhStrLabel);
+    lhStrRow.appendChild(lhStrSelect);
+    box.appendChild(lhStrRow);
+
     const transferRow = document.createElement("div");
     transferRow.className = "dk-card__row";
 

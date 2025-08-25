@@ -18,6 +18,7 @@ import { LayoutDebugTool } from "./tools/layout-debug/index.js";
 import { PerfHudTool } from "./tools/perf-hud/index.js";
 import { LoggerTool } from "./tools/logger/index.js";
 import { InspectorTool } from "./tools/inspector/index.js";
+import { LighthouseTool } from "./tools/lighthouse/index.js";
 
 const ns = "debugkit:v1:";
 
@@ -54,6 +55,7 @@ const ns = "debugkit:v1:";
     reg.registerTool(PerfHudTool);
     reg.registerTool(LoggerTool);
     reg.registerTool(InspectorTool);
+    reg.registerTool(LighthouseTool);
 
     // Автовключение ранее активных инструментов
     reg.autoload();
