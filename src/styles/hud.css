@@ -8,7 +8,7 @@
 
 .dk-hud {
     position: fixed;
-    min-width: 260px;
+    width: 260px;
     max-width: 340px;
     background: var(--dk-surface);
     border: var(--dk-border-width) solid var(--dk-border);
@@ -21,6 +21,12 @@
     z-index: 1;
     left: 16px;
     top: 16px;
+}
+
+@media (max-width: 300px) {
+    .dk-hud {
+        width: calc(100% - 32px);
+    }
 }
 
 .dk-hud .hdr {

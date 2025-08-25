@@ -1,6 +1,33 @@
 /* ===== Общие ===== */
 :root {
     --gap: 16px;
+    --color-text: #222;
+    --color-bg: #fff;
+    --color-border: #e6e6e6;
+    --color-link: #0c63e4;
+    --color-btn-border: #ccc;
+    --color-btn-bg: #f7f7f7;
+    --color-hero-bg: #f9fafb;
+    --color-stripe-bg: #ffeab6;
+    --color-stripe-border: #ffbf00;
+    --color-img-placeholder: #eee;
+    --color-card-wide-bg: #fff6f6;
+    --color-card-wide-border: #f0cccc;
+    --color-nowrap-bg: #f4f7ff;
+    --color-nowrap-border: #a8b7ff;
+    --color-pull-quote-bg: #f7f7f7;
+    --color-pull-quote-border: #999;
+    --space-xs: 6px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 48px;
+    --btn-pad-inline: 10px;
+    --radius-sm: 8px;
+    --border-thin: 4px;
+    --stripe-padding: 24px;
+    --stripe-border-width: 12px;
 }
 * {
     box-sizing: border-box;
@@ -13,7 +40,7 @@ body {
     margin: 0;
     font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial,
         sans-serif;
-    color: #222;
+    color: var(--color-text);
 }
 
 /* Обёртка основной ширины */
@@ -25,8 +52,8 @@ body {
 
 /* ===== Фиксированный хедер, который перекрывает контент (нет компенсации в main) ===== */
 .site-header {
-    background: #fff;
-    border-bottom: 1px solid #e6e6e6;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
 }
 .fixed-header {
     position: fixed;
@@ -37,22 +64,22 @@ body {
     display: flex;
     align-items: center;
     gap: var(--gap);
-    padding: 12px var(--gap);
+    padding: var(--space-md) var(--gap);
     flex-wrap: wrap; /* на узких экранах высота хедера меняется → дополнительный сдвиг */
 }
 .nav {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
 }
 .nav a {
     text-decoration: none;
-    color: #0c63e4;
+    color: var(--color-link);
 }
 .btn {
     margin-left: auto;
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    background: #f7f7f7;
+    padding: var(--space-xs) var(--btn-pad-inline);
+    border: 1px solid var(--color-btn-border);
+    background: var(--color-btn-bg);
     cursor: pointer;
 }
 
@@ -60,36 +87,39 @@ body {
 .hero {
     /* сначала контент упрётся под fixed-header (перекрытие),
      затем этот блок ещё и «подпрыгнет» из-за анимации margin-top */
-    background: #f9fafb;
+    background: var(--color-hero-bg);
     animation: hero-bump 1200ms ease 300ms 1 both;
 }
 .hero .wrap {
-    padding-block: 48px 24px;
+    padding-block: var(--space-xxl) var(--space-lg);
 }
 @keyframes hero-bump {
     from {
         margin-top: 0;
     }
     to {
-        margin-top: 32px;
+        margin-top: var(--space-xl);
     } /* добавили внешнее смещение спустя 300ms */
 }
 
 /* ===== Полоса с гарантированным горизонтальным оверфлоу ===== */
 .stripe {
     /* ширина: 100vw, НО ещё есть паддинги/бордеры внутри → итог шире вьюпорта */
-    width: 100vw;
-    background: #ffeab6;
+    width: calc(
+        100vw - 2 * var(--stripe-padding) - 2 * var(--stripe-border-width)
+    );
+    background: var(--color-stripe-bg);
+    overflow-x: hidden;
 }
 .stripe__inner {
-    padding: 0 24px;
-    border-left: 12px solid #ffbf00;
-    border-right: 12px solid #ffbf00;
+    padding: 0 var(--stripe-padding);
+    border-left: var(--stripe-border-width) solid var(--color-stripe-border);
+    border-right: var(--stripe-border-width) solid var(--color-stripe-border);
     /* Итого: 100vw + 24px + 24px + 12px + 12px = гарантированный горизонтальный скролл */
 }
 .stripe p {
     margin: 0;
-    padding: 12px 0;
+    padding: var(--space-md) 0;
 }
 
 /* ===== Галерея: изображения без width/height → reflow при определении intrinsic size ===== */
@@ -103,7 +133,9 @@ body {
     height: auto;
     display: block;
     /* Отсутствуют width/height атрибуты в HTML → при декодировании размер меняется и толкает соседние блоки */
-    background: #eee; /* серый фон заметнее показывает прыжки */
+    background: var(
+        --color-img-placeholder
+    ); /* серый фон заметнее показывает прыжки */
 }
 
 /* ===== Карточки: одна слишком широкая → тянет горизонтальный скролл ===== */
@@ -111,45 +143,44 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--gap);
-    margin-block: 16px 24px;
+    margin-block: var(--gap) var(--space-lg);
 }
 .card {
-    border: 1px solid #e6e6e6;
-    border-radius: 8px;
-    padding: 12px;
-    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    background: var(--color-bg);
 }
 .card--wide {
-    min-width: 1200px; /* больше, чем .wrap на большинстве экранов → overflow-x */
-    background: #fff6f6;
-    border-color: #f0cccc;
+    background: var(--color-card-wide-bg);
+    border-color: var(--color-card-wide-border);
 }
 
 /* ===== Неразбиваемая строка → переполнение по оси X ===== */
 .nowrap {
     white-space: nowrap;
     word-break: keep-all;
-    background: #f4f7ff;
-    padding: 8px 10px;
-    border: 1px dashed #a8b7ff;
-    margin-bottom: 24px;
+    background: var(--color-nowrap-bg);
+    padding: var(--space-sm) var(--btn-pad-inline);
+    border: 1px dashed var(--color-nowrap-border);
+    margin-bottom: var(--space-lg);
 }
 
 /* ===== Цитата с отрицательным отступом → часть уходит за край контейнера ===== */
 .pull-quote {
-    margin: 0 0 24px -24px; /* выезжаем влево за контейнер */
-    padding: 12px 16px;
-    background: #f7f7f7;
-    border-left: 4px solid #999;
+    margin: 0 0 var(--space-lg) calc(-1 * var(--space-lg)); /* выезжаем влево за контейнер */
+    padding: var(--space-md) var(--gap);
+    background: var(--color-pull-quote-bg);
+    border-left: var(--border-thin) solid var(--color-pull-quote-border);
 }
 
 /* ===== Футер ===== */
 .site-footer {
-    border-top: 1px solid #e6e6e6;
-    background: #fff;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
 }
 .site-footer .wrap {
-    padding-block: 24px;
+    padding-block: var(--space-lg);
 }
 
 /* ===== Режим подсветки границ (включается кнопкой) ===== */

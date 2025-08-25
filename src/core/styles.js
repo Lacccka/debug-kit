@@ -84,12 +84,12 @@ export const BASE_CSS = `
   backdrop-filter:inherit;-webkit-backdrop-filter:inherit;
 }
 .dk-panel__header .ttl{font-weight:700;letter-spacing:.2px}
-.dk-panel__header .srch{
-  margin-left:auto;width:60%;min-width:160px;
-  background:var(--dk-bg-3);color:var(--dk-fg);
-  border:1px solid var(--dk-border);border-radius:10px;padding:8px 10px;
-  outline: none;transition:border-color .15s, box-shadow .15s;
-}
+  .dk-panel__header .srch{
+    margin-left:auto;width:60%;
+    background:var(--dk-bg-3);color:var(--dk-fg);
+    border:1px solid var(--dk-border);border-radius:10px;padding:8px 10px;
+    outline: none;transition:border-color .15s, box-shadow .15s;
+  }
 .dk-panel__header .srch::placeholder{color:var(--dk-fg-muted)}
 .dk-panel__header .srch:focus{
   border-color: color-mix(in oklab, var(--dk-accent) 65%, var(--dk-border));
@@ -97,12 +97,13 @@ export const BASE_CSS = `
 }
 
 /* panel body */
-.dk-panel__body{padding:12px;display:grid;gap:12px}
-.dk-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--dk-gap)}
-@media (max-width: 420px){
-  .dk-panel{width:min(92vw, 360px);right:4px;left:4px}
-  .dk-grid{grid-template-columns:1fr}
-}
+  .dk-panel__body{padding:12px;display:grid;gap:12px}
+  .dk-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--dk-gap)}
+  @media (max-width: 420px){
+    .dk-panel{width:min(92vw, 360px);right:4px;left:4px}
+    .dk-grid{grid-template-columns:1fr}
+    .dk-panel__header .srch{width:100%}
+  }
 
 /* cards */
 .dk-card{
@@ -151,12 +152,13 @@ export const BASE_CSS = `
 
 /* hud */
 .dk-hud-layer{position:fixed;inset:0;pointer-events:none;z-index:var(--dk-z)}
-.dk-hud{
-  position:fixed;min-width:260px;max-width:340px;
-  background:var(--dk-surface);border:1px solid var(--dk-border);
-  border-radius:var(--dk-radius);box-shadow:var(--dk-shadow);
-  pointer-events:auto;overflow:hidden;
-}
+  .dk-hud{
+    position:fixed;width:260px;max-width:340px;
+    background:var(--dk-surface);border:1px solid var(--dk-border);
+    border-radius:var(--dk-radius);box-shadow:var(--dk-shadow);
+    pointer-events:auto;overflow:hidden;
+  }
+  @media (max-width:300px){.dk-hud{width:calc(100% - 32px);}}
 .dk-hud .hdr{
   display:flex;align-items:center;gap:8px;padding:8px 10px;
   background:color-mix(in oklab, var(--dk-surface) 85%, #000 15%);

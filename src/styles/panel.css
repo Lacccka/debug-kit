@@ -86,7 +86,7 @@
 .dk-panel__header .srch {
     margin-left: auto;
     width: 60%;
-    min-width: 10rem;
+
     background: var(--dk-bg-3);
     color: var(--dk-fg);
     border: var(--dk-border-width) solid var(--dk-border);
@@ -119,6 +119,9 @@
         width: min(92vw, 22.5rem);
         right: var(--dk-space-sm);
         left: var(--dk-space-sm);
+    }
+    .dk-panel__header .srch {
+        width: 100%;
     }
     .dk-grid {
         grid-template-columns: 1fr;
