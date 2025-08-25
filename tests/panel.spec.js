@@ -79,7 +79,7 @@ assert.ok(
 
 panel.close();
 assert.ok(
-    document.querySelector(".dk-panel").classList.contains("open"),
+    document.querySelector(".dk-panel").classList.contains("is-open"),
     "panel remains open when locked"
 );
 
@@ -87,7 +87,7 @@ lockInput.checked = false;
 lockInput.dispatchEvent(new window.Event("change", { bubbles: true }));
 panel.close();
 assert.equal(
-    document.querySelector(".dk-panel").classList.contains("open"),
+    document.querySelector(".dk-panel").classList.contains("is-open"),
     false,
     "panel closes when unlocked"
 );

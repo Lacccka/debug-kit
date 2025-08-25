@@ -14,27 +14,27 @@ export function createPanel({ bus, registry, storage, shadowRoot, ns }) {
 
     const api = {
         open() {
-            panel.classList.add("open");
+            panel.classList.add("is-open");
         },
         close() {
-            if (!locked) panel.classList.remove("open");
+            if (!locked) panel.classList.remove("is-open");
         },
         toggle() {
-            if (locked) panel.classList.add("open");
-            else panel.classList.toggle("open");
+            if (locked) panel.classList.add("is-open");
+            else panel.classList.toggle("is-open");
         },
         toggleState() {
-            return panel.classList.contains("open");
+            return panel.classList.contains("is-open");
         },
     };
     toggle.addEventListener("click", () => api.toggle());
 
     bus.on("panel:lock", (v) => {
         locked = v;
-        if (locked) panel.classList.add("open");
+        if (locked) panel.classList.add("is-open");
     });
 
-    if (locked) panel.classList.add("open");
+    if (locked) panel.classList.add("is-open");
 
     function render() {
         panel.innerHTML = "";

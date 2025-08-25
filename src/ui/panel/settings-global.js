@@ -12,9 +12,9 @@ export function renderGlobalSettings({ storage, ns, bus }) {
     head.textContent = "Глобальные настройки";
     box.appendChild(head);
 
-    const themeRow = document.createElement("div");
-    themeRow.className = "dk-card__row";
-    const themeLabel = document.createElement("span");
+    const themeField = document.createElement("div");
+    themeField.className = "dk-field";
+    const themeLabel = document.createElement("label");
     themeLabel.textContent = "Тема";
     const themeSelect = document.createElement("select");
     ["auto", "light", "dark"].forEach((v) => {
@@ -38,31 +38,25 @@ export function renderGlobalSettings({ storage, ns, bus }) {
             bus && bus.emit && bus.emit("theme:set", val);
         }
     };
-    themeRow.appendChild(themeLabel);
-    themeRow.appendChild(themeSelect);
-    box.appendChild(themeRow);
+    themeField.appendChild(themeLabel);
+    themeField.appendChild(themeSelect);
+    box.appendChild(themeField);
 
-    const lockRow = document.createElement("div");
-    lockRow.className = "dk-card__row";
-    const lockLabel = document.createElement("span");
-    lockLabel.textContent = "Блокировка панели";
-    const lockCtrl = document.createElement("label");
-    lockCtrl.className = "dk-switch";
+    const lockField = document.createElement("div");
+    lockField.className = "dk-field";
+    const lockLabel = document.createElement("label");
     const lockInput = document.createElement("input");
     lockInput.type = "checkbox";
     lockInput.checked = storage.getItem(ns + "panelLock", "0") === "1";
-    const lockSlider = document.createElement("span");
-    lockSlider.className = "slider";
-    lockCtrl.appendChild(lockInput);
-    lockCtrl.appendChild(lockSlider);
+    lockLabel.appendChild(lockInput);
+    lockLabel.appendChild(document.createTextNode(" Блокировка панели"));
     lockInput.onchange = () => {
         const val = lockInput.checked;
         storage.setItem(ns + "panelLock", val ? "1" : "0");
         bus && bus.emit && bus.emit("panel:lock", val);
     };
-    lockRow.appendChild(lockLabel);
-    lockRow.appendChild(lockCtrl);
-    box.appendChild(lockRow);
+    lockField.appendChild(lockLabel);
+    box.appendChild(lockField);
 
     const lhUrlRow = document.createElement("div");
     lhUrlRow.className = "dk-field";

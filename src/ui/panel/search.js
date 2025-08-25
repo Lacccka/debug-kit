@@ -3,7 +3,7 @@ export function renderList({ registry }) {
 
     const tools = (registry.getAll && registry.getAll()) || [];
     const grid = document.createElement("div");
-    grid.className = "dk-grid";
+    grid.className = "dk-grid dk-grid--auto";
 
     function draw(filter = "") {
         grid.innerHTML = "";
@@ -23,18 +23,12 @@ export function renderList({ registry }) {
                     icon || "🔧"
                 }</span><span class="n">${name}</span>`;
 
-                const ctrl = document.createElement("label");
-                ctrl.className = "dk-switch";
-                const input = document.createElement("input");
-                input.type = "checkbox";
-                input.checked = !!enabled;
-                const span = document.createElement("span");
-                span.className = "slider";
-                ctrl.appendChild(input);
-                ctrl.appendChild(span);
+                const ctrl = document.createElement("input");
+                ctrl.type = "checkbox";
+                ctrl.checked = !!enabled;
 
-                input.onchange = () => {
-                    if (input.checked) registry.enableTool(id);
+                ctrl.onchange = () => {
+                    if (ctrl.checked) registry.enableTool(id);
                     else registry.disableTool(id);
                 };
 
