@@ -92,8 +92,8 @@ const btnPin = hudState.el.querySelector(".btn-pin");
 btnMin.click();
 let state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.ok(
-    hudState.el.classList.contains("is-pill"),
-    "should add is-pill on minimize"
+    hudState.el.classList.contains("is-collapsed"),
+    "should add is-collapsed on minimize"
 );
 assert.deepEqual(
     state.state,
@@ -104,9 +104,9 @@ assert.deepEqual(
 btnMin.click();
 state = JSON.parse(localStorage.getItem(NS + "hudstate"));
 assert.equal(
-    hudState.el.classList.contains("is-pill"),
+    hudState.el.classList.contains("is-collapsed"),
     false,
-    "should remove is-pill on restore"
+    "should remove is-collapsed on restore"
 );
 assert.deepEqual(
     state.state,

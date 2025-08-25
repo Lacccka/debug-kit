@@ -50,7 +50,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
             } else {
                 hud.style.maxHeight = "";
             }
-            if (!hud.classList.contains("is-pill")) {
+            if (!hud.classList.contains("is-collapsed")) {
                 hud.style.minWidth = w + "px";
                 hud.style.width = w + "px";
             }
@@ -82,6 +82,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
             st = 0;
         const onDown = (e) => {
             dragging = true;
+            hud.setAttribute("data-dragging", "true");
             const p = e.touches ? e.touches[0] : e;
             sx = p.clientX;
             sy = p.clientY;
@@ -105,6 +106,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
             if (!dragging) return;
             dragging = false;
             hud.style.transition = "";
+            hud.removeAttribute("data-dragging");
             // snap к краям
             const r = hud.getBoundingClientRect();
             const snapEdge =
@@ -144,7 +146,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
 
         const setMinimized = (v) => {
             minimized = v;
-            hud.classList.toggle("is-pill", minimized);
+            hud.classList.toggle("is-collapsed", minimized);
             body.style.display = minimized ? "none" : "";
             if (minimized) {
                 hud.style.minWidth = "0";
@@ -192,7 +194,7 @@ export function createHudFactory({ shadowRoot, bus, ns }) {
         };
 
         const onHdrClick = (e) => {
-            if (hud.classList.contains("is-pill") && e.target === hdr) {
+            if (hud.classList.contains("is-collapsed") && e.target === hdr) {
                 setMinimized(false);
             }
         };

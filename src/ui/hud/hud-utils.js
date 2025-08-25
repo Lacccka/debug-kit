@@ -14,7 +14,7 @@ export const scanOverflow = (root = document, highlight = highlightElement) => {
         const ch = el.clientHeight;
         if (sw > cw + 1 || sh > ch + 1) {
             offenders.push(el);
-            highlight(el, "dk-outline-error-dashed");
+            highlight(el, "dk-outline-error");
         }
     });
     return offenders;

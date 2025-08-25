@@ -52,7 +52,7 @@ assert.deepEqual(offenders, [overflow], "should return overflow elements");
 assert.equal(highlighted.length, 1, "should highlight offenders");
 assert.equal(
     highlighted[0].cls,
-    "dk-outline-error-dashed",
+    "dk-outline-error",
     "should use overflow highlight class"
 );
 

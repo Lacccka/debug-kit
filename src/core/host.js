@@ -13,7 +13,7 @@ export function createHost() {
     // основные слои
 
     const root = document.createElement("div");
-    root.className = "dk-root";
+    root.className = "dk-panel-root";
     root.style.pointerEvents = "auto";
     root.style.zIndex = "2";
     shadowRoot.appendChild(root);
