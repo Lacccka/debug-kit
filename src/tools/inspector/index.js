@@ -22,6 +22,7 @@ export const InspectorTool = {
         hud.setContent(info);
 
         let highlighted = null;
+        let prevOutline = "";
 
         const onMove = (e) => {
             const el = e.target;
@@ -30,6 +31,7 @@ export const InspectorTool = {
             }
             if (highlighted) {
                 highlighted.classList.remove("dk-outline-error");
+                highlighted.style.outline = prevOutline;
             }
             highlighted = el;
             prevOutline = el.style.outline;
@@ -46,6 +48,7 @@ export const InspectorTool = {
             document.removeEventListener("mousemove", onMove);
             if (highlighted) {
                 highlighted.classList.remove("dk-outline-error");
+                highlighted.style.outline = prevOutline;
             }
             hud.destroy();
         };
