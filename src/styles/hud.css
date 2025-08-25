@@ -1,96 +1,211 @@
 /* hud.css — HUD container & header (draggable area) */
+/* Требования: зависит от tokens.css (переменные --dk-*) */
+
+/* 0) Слой HUD */
 .dk-hud-layer {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: var(--dk-z);
+    /* отдельный z-index для HUD; можно переопределить через :root { --dk-z-hud: ... } */
+    --dk-z-hud: var(--dk-z-overlay);
+    z-index: var(--dk-z-hud);
 }
 
+/* 1) Контейнер HUD */
 .dk-hud {
     position: fixed;
-    width: 300px;
-    max-width: 480px;
-    min-width: 280px;
-    background: var(--dk-surface);
-    border: var(--dk-border-width) solid var(--dk-border);
+    /* размеры через CSS-переменные, чтобы JS-конфиг просто подставлял px */
+    --hud-width: 320px;
+    --hud-min-width: 280px;
+    --hud-max-width: 480px;
+
+    width: var(--hud-width);
+    min-width: var(--hud-min-width);
+    max-width: var(--hud-max-width);
+
+    background: var(--dk-color-surface);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
     border-radius: var(--dk-radius);
-    box-shadow: var(--dk-shadow);
+    box-shadow: var(--dk-elevation-3);
     pointer-events: auto;
     overflow: hidden;
-    will-change: transform; /* hint for smoother drag */
-    transition: background 0.2s, box-shadow 0.2s;
+    will-change: transform;
+    transition: background var(--dk-dur) var(--dk-ease-out),
+        box-shadow var(--dk-dur) var(--dk-ease-out),
+        border-color var(--dk-dur-fast) var(--dk-ease-out);
     z-index: 1;
-    left: 16px;
-    top: 16px;
+
+    /* стартовая позиция с учётом safe-area */
+    left: max(var(--dk-space-4), env(safe-area-inset-left, 16px));
+    top: max(var(--dk-space-4), env(safe-area-inset-top, 16px));
 }
 
-@media (max-width: 300px) {
+/* узкие экраны */
+@media (max-width: 360px) {
     .dk-hud {
-        width: calc(100% - 32px);
+        left: max(var(--dk-space-3), env(safe-area-inset-left, 12px));
+        right: max(var(--dk-space-3), env(safe-area-inset-right, 12px));
+        width: auto;
+        min-width: unset;
+        max-width: unset;
     }
 }
 
+/* состояние перетаскивания (ставь [data-dragging="true"] во время drag) */
+.dk-hud[data-dragging="true"] {
+    box-shadow: var(--dk-elevation-2);
+    transition: none;
+}
+
+/* 2) Заголовок (drag-handle) */
 .dk-hud .hdr {
     display: flex;
     align-items: center;
-    gap: var(--dk-space-md);
-    padding: var(--dk-space-lg);
-    background: color-mix(in oklab, var(--dk-surface) 85%, #000 15%);
-    border-bottom: var(--dk-border-width) solid var(--dk-border);
+    gap: var(--dk-gap);
+    padding: var(--dk-padding-y) var(--dk-padding-x);
+    background: color-mix(in oklab, var(--dk-color-surface) 85%, #000 15%);
+    border-bottom: var(--dk-border-width) var(--dk-border-style)
+        var(--dk-color-border);
     border-radius: var(--dk-radius) var(--dk-radius) 0 0;
     cursor: move;
     user-select: none;
-    transition: background 0.2s;
+    -webkit-user-select: none;
+    touch-action: none; /* помогает тач-drag */
+    transition: background var(--dk-dur) var(--dk-ease-out);
 }
 
+/* при наведении на заголовок слегка усиливаем фон */
+.dk-hud .hdr:hover {
+    background: color-mix(in oklab, var(--dk-color-surface) 78%, #000 22%);
+}
+
+/* и во время drag */
+.dk-hud[data-dragging="true"] .hdr {
+    background: color-mix(in oklab, var(--dk-color-surface) 72%, #000 28%);
+}
+
+/* 3) Тело/контент */
 .dk-hud .bd {
-    padding: var(--dk-space-lg);
+    padding: var(--dk-padding-y) var(--dk-padding-x);
+    color: var(--dk-color-text);
 }
 
+/* 4) Текст заголовка и кнопки */
 .dk-hud .hdr .ttl {
     font-weight: 600;
-    margin-left: 4px;
+    margin-left: var(--dk-space-1);
+    font-size: var(--dk-text-md);
+    color: var(--dk-color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* группа кнопок справа */
 .dk-hud .hdr .btns {
     margin-left: auto;
     display: flex;
-    gap: 6px;
+    gap: var(--dk-space-2);
 }
 
+/* универсальный ряд кнопок в теле */
 .dk-btn-row {
     display: flex;
-    gap: var(--dk-space-md);
-    margin-top: var(--dk-space-md);
+    gap: var(--dk-gap);
+    margin-top: var(--dk-gap);
 }
 
+/* кнопка */
 .dk-hud .btn {
     cursor: pointer;
     display: grid;
     place-items: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--dk-size-2);
+    height: var(--dk-size-2);
     padding: 0;
     line-height: 1;
-    font-size: 0.875rem;
-    background: var(--dk-bg-3);
-    color: var(--dk-fg);
-    border: var(--dk-border-width) solid var(--dk-border);
-    border-radius: var(--dk-space-sm);
-    transition: background 0.15s, border-color 0.15s;
+    font-size: var(--dk-text-sm);
+    background: var(--dk-color-bg-3);
+    color: var(--dk-color-text);
+    border: var(--dk-border-width) var(--dk-border-style) var(--dk-color-border);
+    border-radius: var(--dk-radius-sm);
+    box-shadow: var(--dk-elevation-1);
+    transition: background var(--dk-dur-fast) var(--dk-ease-out),
+        border-color var(--dk-dur-fast) var(--dk-ease-out),
+        transform var(--dk-dur-fast) var(--dk-ease-out);
 }
 
+/* состояния кнопок */
 .dk-hud .btn:hover {
-    background: var(--dk-bg);
-    border-color: var(--dk-accent-border);
+    background: var(--dk-color-bg);
+    border-color: var(--dk-color-border-accent);
 }
 
 .dk-hud .btn:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
 }
 
 .dk-hud .btn:focus-visible {
     outline: none;
-    border-color: var(--dk-accent-border);
-    box-shadow: 0 0 0 var(--dk-space-sm) var(--dk-accent-subtle);
+    box-shadow: var(--dk-focus-ring);
+}
+
+/* вариант кнопки-акцента (добавляй .btn--accent по месту) */
+.dk-hud .btn.btn--accent {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border-color: var(--btn-border);
+}
+.dk-hud .btn.btn--accent:hover {
+    background: var(--btn-bg-hover);
+}
+.dk-hud .btn.btn--accent:active {
+    background: var(--btn-bg-active);
+}
+
+/* 5) Состояния окна */
+.dk-hud[hidden],
+.dk-hud.is-hidden {
+    display: none !important;
+}
+
+.dk-hud.is-collapsed .bd {
+    display: none;
+}
+.dk-hud.is-collapsed .hdr {
+    border-radius: var(--dk-radius);
+}
+
+/* 6) Доступность: фокус контуром на всём HUD при навигации с клавиатуры */
+.dk-hud:focus-visible {
+    outline: none;
+    box-shadow: var(--dk-focus-ring);
+}
+
+/* 7) Forced-colors: упрощаем стили */
+@media (forced-colors: active) {
+    .dk-hud {
+        background: Canvas;
+        color: CanvasText;
+        border-color: GrayText;
+        box-shadow: none;
+    }
+    .dk-hud .hdr {
+        background: Canvas;
+    }
+    .dk-hud .btn {
+        background: ButtonFace;
+        color: ButtonText;
+        border-color: ButtonText;
+        box-shadow: none;
+    }
+}
+
+/* 8) Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .dk-hud,
+    .dk-hud .btn,
+    .dk-hud .hdr {
+        transition: none;
+    }
 }
