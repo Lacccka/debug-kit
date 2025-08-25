@@ -18,7 +18,7 @@ export const GridOverlayTool = {
         };
 
         const overlay = document.createElement("div");
-        overlay.classList.add("dk-overlay", "dk-grid-overlay");
+        overlay.classList.add("dk-grid-overlay");
         ctx.shadowRoot.appendChild(overlay);
 
         const apply = () => {

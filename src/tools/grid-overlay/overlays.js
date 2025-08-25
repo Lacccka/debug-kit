@@ -1,6 +1,8 @@
 // tools/grid-overlay/overlays.js — CSS-gradients для оверлея.
 
-const DEFAULT_COLOR = "rgba(0,128,255,0.25)";
+// базовый цвет/прозрачность берём из токенов
+const DEFAULT_COLOR =
+    "color-mix(in oklab, var(--dk-grid-color) var(--dk-grid-opacity), transparent)";
 
 /**
  * Возвращает градиент для колонок.

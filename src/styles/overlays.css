@@ -45,9 +45,14 @@
 
 /* Сетка/диагностика поверх UI */
 .dk-grid-overlay {
+    /* токены: z-index, цвет и прозрачность */
+    --_overlay-z: var(--dk-z-overlay);
+    --dk-grid-color: var(--dk-color-accent);
+    --dk-grid-opacity: 25%;
+
     position: fixed;
     inset: 0;
-    z-index: var(--dk-z-1);
+    z-index: var(--_overlay-z);
     pointer-events: none;
 }
 
