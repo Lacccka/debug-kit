@@ -23,22 +23,6 @@ const hudRoot = document.createElement("div");
 hudRoot.className = "dk-hud-root";
 document.body.appendChild(hudRoot);
 
-// element without overflow
-const normal = document.createElement("div");
-document.body.appendChild(normal);
-Object.defineProperty(normal, "scrollWidth", { get: () => 50 });
-Object.defineProperty(normal, "clientWidth", { get: () => 50 });
-Object.defineProperty(normal, "scrollHeight", { get: () => 20 });
-Object.defineProperty(normal, "clientHeight", { get: () => 20 });
-
-// element with overflow
-const overflow = document.createElement("div");
-document.body.appendChild(overflow);
-Object.defineProperty(overflow, "scrollWidth", { get: () => 150 });
-Object.defineProperty(overflow, "clientWidth", { get: () => 50 });
-Object.defineProperty(overflow, "scrollHeight", { get: () => 20 });
-Object.defineProperty(overflow, "clientHeight", { get: () => 20 });
-
 // bus for events
 const bus = createBus();
 
@@ -49,35 +33,15 @@ const hud = document.querySelector(".dk-hud");
 const bodyEl = hud.children[1];
 const view = bodyEl.firstChild;
 const label = view.firstChild;
-const btnScan = view.querySelector("button");
+const changeLabel = view.lastChild;
 
-// verify scanOverflow highlights offending elements and returns offenders
-const realSetTimeout = global.setTimeout;
-global.setTimeout = () => {};
-const offenders = btnScan.onclick();
-assert.equal(
-    overflow.classList.contains("dk-outline-error"),
-    true,
-    "overflow element should be highlighted"
-);
-assert.equal(
-    normal.classList.contains("dk-outline-error"),
-    false,
-    "non-overflow element should remain unstyled"
-);
-assert.deepEqual(
-    offenders,
-    [overflow],
-    "scanOverflow should return offending elements"
-);
-global.setTimeout = realSetTimeout;
-
-// verify HUD updates on viewport:change
+// verify HUD updates on viewport:change and records zoom changes
 assert.equal(
     label.textContent,
     "scale: 1.00 | viewport: 100×200",
     "initial label text"
 );
+assert.equal(changeLabel.textContent, "", "no zoom changes initially");
 innerWidth = window.innerWidth = 300;
 innerHeight = window.innerHeight = 400;
 visualViewport.scale = 1.5;
@@ -86,6 +50,11 @@ assert.equal(
     label.textContent,
     "scale: 1.50 | viewport: 300×400",
     "label should update on viewport change"
+);
+assert.equal(
+    changeLabel.textContent,
+    "zoom changed: 1.00 → 1.50",
+    "should report zoom change"
 );
 
 GuardTool.destroy();

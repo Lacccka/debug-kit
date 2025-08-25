@@ -1,6 +1,5 @@
 // src/tools/guard/index.js
 import { createHudFactory } from "../../ui/hud/hud-factory.js";
-import { scanOverflow } from "../../ui/hud/hud-utils.js";
 
 let cleanup = null;
 
@@ -21,25 +20,29 @@ export const GuardTool = {
 
         const view = document.createElement("div");
         const label = document.createElement("div");
-        const btnScan = document.createElement("button");
-        btnScan.textContent = "Overflow scan";
-        btnScan.classList.add("btn");
+        const changeLabel = document.createElement("div");
 
         view.appendChild(label);
         view.appendChild(document.createElement("br"));
-        view.appendChild(btnScan);
+        view.appendChild(changeLabel);
         hud.setContent(view);
+
+        let prevScale = (visualViewport && visualViewport.scale) || 1;
 
         const update = () => {
             const scale = (visualViewport && visualViewport.scale) || 1;
             label.textContent = `scale: ${scale.toFixed(
                 2
             )} | viewport: ${innerWidth}×${innerHeight}`;
+            if (scale !== prevScale) {
+                changeLabel.textContent = `zoom changed: ${prevScale.toFixed(
+                    2
+                )} → ${scale.toFixed(2)}`;
+                prevScale = scale;
+            }
         };
         const off1 = ctx.bus.on && ctx.bus.on("viewport:change", update);
         update();
-
-        btnScan.onclick = () => scanOverflow();
 
         cleanup = () => {
             off1 && off1();
